@@ -17,9 +17,9 @@
  * 13.  TOAST HELPER
  */
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    1. DATA — SCHOOL BOARDS
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 const BOARDS_DATA = {
   CBSE: {
     classes: [6, 7, 8, 9, 10],
@@ -279,64 +279,64 @@ const BOARDS_DATA = {
           markingScheme: { title: 'ICSE Hindi Marking Scheme 2026' },
           books: [
             {
-              name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤° — à¤—à¤¦à¥à¤¯ (Prose)',
+              name: 'साहित्य सागर — गद्य (Prose)',
               subtitle: 'Class 10 ICSE Hindi — Gadya Khand | 10 Kahaniyaan',
               color: '#9B59B6',
               chapters: [
-                { num: 1,  title: 'à¤¬à¤¾à¤¤ à¤…à¤ à¤¨à¥à¤¨à¥€ à¤|à¥€',         worksheets: 2 },
-                { num: 2,  title: 'à¤|à¤¾à¤|à¥€',                   worksheets: 2 },
-                { num: 3,  title: 'à¤®à¤¹à¤¾à¤¯à¤œà¥à¤ž à¤|à¤¾ à¤ªà¥à¤°à¤¸à¥à¤|à¤¾à¤°',    worksheets: 2 },
-                { num: 4,  title: 'à¤¨à¥‡à¤¤à¤¾à¤œà¥€ à¤|à¤¾ à¤šà¤¶à¥à¤®à¤¾',        worksheets: 2 },
-                { num: 5,  title: 'à¤…à¤ªà¤¨à¤¾-à¤…à¤ªà¤¨à¤¾ à¤­à¤¾à¤—à¥à¤¯',        worksheets: 2 },
-                { num: 6,  title: 'à¤¬à¤¡à¤¼à¥‡ à¤˜à¤° à¤|à¥€ à¤¬à¥‡à¤Ÿà¥€',        worksheets: 2 },
-                { num: 7,  title: 'à¤¸à¤‚à¤¦à¥‡à¤¹',                  worksheets: 1 },
-                { num: 8,  title: 'à¤­à¥€à¤¡à¤¼ à¤®à¥‡à¤‚ à¤–à¥‹à¤¯à¤¾ à¤†à¤¦à¤®à¥€',     worksheets: 2 },
-                { num: 9,  title: 'à¤­à¥‡à¤¡à¤¼à¥‡à¤‚ à¤”à¤° à¤­à¥‡à¤¡à¤¼à¤¿à¤',       worksheets: 1 },
-                { num: 10, title: 'à¤¦à¥‹ à¤|à¤²à¤¾à¤|à¤¾à¤°',              worksheets: 2 },
+                { num: 1,  title: 'बात अठन्नी की',         worksheets: 2 },
+                { num: 2,  title: 'काकी',                   worksheets: 2 },
+                { num: 3,  title: 'महायज्ञ का पुरस्कार',    worksheets: 2 },
+                { num: 4,  title: 'नेताजी का चश्मा',        worksheets: 2 },
+                { num: 5,  title: 'अपना-अपना भाग्य',        worksheets: 2 },
+                { num: 6,  title: 'बड़े घर की बेटी',        worksheets: 2 },
+                { num: 7,  title: 'संदेह',                  worksheets: 1 },
+                { num: 8,  title: 'भीड़ में खोया आदमी',     worksheets: 2 },
+                { num: 9,  title: 'भेड़ें और भेड़िए',       worksheets: 1 },
+                { num: 10, title: 'दो कलाकार',              worksheets: 2 },
               ]
             },
             {
-              name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤° — à¤ªà¤¦à¥à¤¯ (Poetry)',
+              name: 'साहित्य सागर — पद्य (Poetry)',
               subtitle: 'Class 10 ICSE Hindi — Padya Khand | 9 Kavitaen',
               color: '#E8900A',
               chapters: [
-                { num: 1, title: 'à¤¸à¤¾à¤–à¥€',                    worksheets: 2 },
-                { num: 2, title: 'à¤|à¥à¤‚à¤¡à¤²à¤¿à¤¯à¤¾à¤',               worksheets: 2 },
-                { num: 3, title: 'à¤¸à¥à¤µà¤°à¥à¤— à¤¬à¤¨à¤¾ à¤¸à¤|à¤¤à¥‡ à¤¹à¥ˆà¤‚',     worksheets: 2 },
-                { num: 4, title: 'à¤µà¤¹ à¤®à¤¾à¤¤à¥ƒà¤­à¥‚à¤®à¤¿ à¤®à¥‡à¤°à¥€',        worksheets: 2 },
-                { num: 5, title: 'à¤®à¥‡à¤˜ à¤†à¤',                  worksheets: 1 },
-                { num: 6, title: 'à¤¸à¥‚à¤°à¤¦à¤¾à¤¸ à¤|à¥‡ à¤ªà¤¦',            worksheets: 2 },
-                { num: 7, title: 'à¤µà¤¿à¤¨à¤¯ à¤|à¥‡ à¤ªà¤¦',               worksheets: 2 },
-                { num: 8, title: 'à¤­à¤¿à¤|à¥à¤|à¥à¤|',                 worksheets: 1 },
-                { num: 9, title: 'à¤šà¤²à¤¨à¤¾ à¤¹à¤®à¤¾à¤°à¤¾ à¤|à¤¾à¤® à¤¹à¥ˆ',        worksheets: 2 },
+                { num: 1, title: 'साखी',                    worksheets: 2 },
+                { num: 2, title: 'कुंडलियाँ',               worksheets: 2 },
+                { num: 3, title: 'स्वर्ग बना सकते हैं',     worksheets: 2 },
+                { num: 4, title: 'वह मातृभूमि मेरी',        worksheets: 2 },
+                { num: 5, title: 'मेघ आए',                  worksheets: 1 },
+                { num: 6, title: 'सूरदास के पद',            worksheets: 2 },
+                { num: 7, title: 'विनय के पद',               worksheets: 2 },
+                { num: 8, title: 'भिक्षुक',                 worksheets: 1 },
+                { num: 9, title: 'चलना हमारा काम है',        worksheets: 2 },
               ]
             },
             {
-              name: 'à¤à¤|à¤¾à¤‚à¤|à¥€ à¤¸à¤‚à¤šà¤¯',
+              name: 'एकांकी संचय',
               subtitle: 'Class 10 ICSE Hindi — Ekanki | 6 One-Act Plays',
               color: '#2BA899',
               chapters: [
-                { num: 1, title: 'à¤¸à¤‚à¤¸à¥à¤|à¤¾à¤° à¤”à¤° à¤­à¤¾à¤µà¤¨à¤¾',        worksheets: 2 },
-                { num: 2, title: 'à¤¬à¤¹à¥‚ à¤|à¥€ à¤µà¤¿à¤¦à¤¾',             worksheets: 2 },
-                { num: 3, title: 'à¤®à¤¾à¤¤à¥ƒà¤­à¥‚à¤®à¤¿ à¤|à¤¾ à¤®à¤¾à¤¨',         worksheets: 2 },
-                { num: 4, title: 'à¤¸à¥‚à¤–à¥€ à¤¡à¤¾à¤²à¥€',               worksheets: 2 },
-                { num: 5, title: 'à¤®à¤¹à¤¾à¤­à¤¾à¤°à¤¤ à¤|à¥€ à¤à¤| à¤¸à¤¾à¤à¤',      worksheets: 2 },
-                { num: 6, title: 'à¤¦à¥€à¤ªà¤¦à¤¾à¤¨',                  worksheets: 2 },
+                { num: 1, title: 'संस्कार और भावना',        worksheets: 2 },
+                { num: 2, title: 'बहू की विदा',             worksheets: 2 },
+                { num: 3, title: 'मातृभूमि का मान',         worksheets: 2 },
+                { num: 4, title: 'सूखी डाली',               worksheets: 2 },
+                { num: 5, title: 'महाभारत की एक साँझ',      worksheets: 2 },
+                { num: 6, title: 'दीपदान',                  worksheets: 2 },
               ]
             },
             {
-              name: 'à¤¨à¤¯à¤¾ à¤°à¤¾à¤¸à¥à¤¤à¤¾ (à¤‰à¤ªà¤¨à¥à¤¯à¤¾à¤¸)',
-              subtitle: 'Class 10 ICSE Hindi — Novel | à¤…à¤§à¥à¤¯à¤¾à¤¯ à¤|à¥à¤°à¤®à¤µà¤¾à¤° (Publisher: Evergreen / Morning Star)',
+              name: 'नया रास्ता (उपन्यास)',
+              subtitle: 'Class 10 ICSE Hindi — Novel | अध्याय क्रमवार (Publisher: Evergreen / Morning Star)',
               color: '#E05555',
               chapters: [
-                { num: 1, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 1', worksheets: 1 },
-                { num: 2, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 2', worksheets: 1 },
-                { num: 3, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 3', worksheets: 1 },
-                { num: 4, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 4', worksheets: 1 },
-                { num: 5, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 5', worksheets: 1 },
-                { num: 6, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 6', worksheets: 1 },
-                { num: 7, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 7', worksheets: 1 },
-                { num: 8, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 8', worksheets: 1 },
+                { num: 1, title: 'अध्याय 1', worksheets: 1 },
+                { num: 2, title: 'अध्याय 2', worksheets: 1 },
+                { num: 3, title: 'अध्याय 3', worksheets: 1 },
+                { num: 4, title: 'अध्याय 4', worksheets: 1 },
+                { num: 5, title: 'अध्याय 5', worksheets: 1 },
+                { num: 6, title: 'अध्याय 6', worksheets: 1 },
+                { num: 7, title: 'अध्याय 7', worksheets: 1 },
+                { num: 8, title: 'अध्याय 8', worksheets: 1 },
               ]
             }
           ]
@@ -346,9 +346,9 @@ const BOARDS_DATA = {
   }
 };
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    2. DATA — TEST SHEETS
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 const TEST_DATA = {
   UTP: {
     CBSE: {
@@ -430,9 +430,9 @@ const TEST_DATA = {
   }
 };
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    3. SVG HELPERS
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 const SVG = {
   book: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
   file: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
@@ -447,9 +447,9 @@ const SVG = {
   chevD: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`,
 };
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    STATE
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 let state = {
   board: 'CBSE',
   cls:   10,
@@ -458,9 +458,9 @@ let state = {
   testBoard: 'CBSE',
 };
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    DOM READY
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initFadeIn();
@@ -473,9 +473,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollTop();
 });
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    4. NAVBAR
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function initNavbar() {
   const hamburger  = document.getElementById('hamburger');
   const navLinks   = document.getElementById('nav-links');
@@ -551,9 +551,9 @@ function initNavbar() {
   sections.forEach(s => secObs.observe(s));
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    5. FADE-IN
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 let fadeObserver;
 function initFadeIn() {
   fadeObserver = new IntersectionObserver((entries) => {
@@ -576,9 +576,9 @@ function observeFade(el) {
   else el.classList.add('visible');
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    6. SCHOOL BOARDS SECTION
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function initBoardsSection() {
   /* Board tab clicks */
   document.querySelectorAll('.board-tab').forEach(tab => {
@@ -762,7 +762,7 @@ function renderChapter(book, ch) {
               <div class="ch-res-item" role="button" tabindex="0" onclick="${r.action}">
                 <div class="ch-res-icon" style="background:${r.bg};color:${r.color}">${r.icon}</div>
                 <span class="ch-res-label">${r.label}</span>
-                <span class="ch-res-action">Open †’</span>
+                <span class="ch-res-action">Open →</span>
               </div>`).join('')}
           </div>
           ${ch.worksheets > 0 ? `
@@ -774,9 +774,9 @@ function renderChapter(book, ch) {
     </div>`;
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    7. TEST SHEETS
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function initTestSheets() {
   /* Category tabs */
   document.querySelectorAll('.test-tab').forEach(tab => {
@@ -876,9 +876,9 @@ function renderTestPaperCard(p) {
     </div>`;
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    8. CONTACT FORM
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
@@ -948,9 +948,9 @@ function initContactForm() {
   });
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    9. REVISION NOTIFY FORM
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function initRevisionNotify() {
   const form = document.getElementById('notify-form');
   if (!form) return;
@@ -982,9 +982,9 @@ function initRevisionNotify() {
   });
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    10. DOCUMENT VIEWER MODAL
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function initDocModal() {
   const modal     = document.getElementById('doc-modal');
   const closeBtn  = document.getElementById('doc-modal-close');
@@ -1011,9 +1011,9 @@ function openDocViewer(title) {
   openModal(modal);
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    11. UPLOAD ANSWER SHEET MODAL
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function initUploadModal() {
   const modal      = document.getElementById('upload-modal');
   const closeBtn   = document.getElementById('upload-modal-close');
@@ -1103,7 +1103,7 @@ function initUploadModal() {
   });
 }
 
-function openUploadModal(resourceName, resourceId) {
+function openUploadModal(resourceName) {
   const modal    = document.getElementById('upload-modal');
   const label    = document.getElementById('upload-for-label');
   const fileInfo = document.getElementById('upload-file-selected');
@@ -1112,8 +1112,6 @@ function openUploadModal(resourceName, resourceId) {
   const successEl= document.getElementById('upload-success');
   const dropArea = document.getElementById('upload-drop-area');
   if (!modal) return;
-  window._uploadResourceName = resourceName;
-  window._uploadResourceId   = resourceId || resourceName;
   label.textContent = `Upload your answer sheet for: "${resourceName}"`;
   fileInfo.hidden = true;
   submitBtn.disabled = true;
@@ -1123,9 +1121,9 @@ function openUploadModal(resourceName, resourceId) {
   openModal(modal);
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    12. SCROLL TO TOP
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function initScrollTop() {
   const btn = document.getElementById('scroll-top');
   if (!btn) return;
@@ -1133,9 +1131,9 @@ function initScrollTop() {
   btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════
    13. HELPERS
-══════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function openModal(modal) {
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
@@ -1221,6 +1219,3 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 350);
   }, 4000);
 }
-
-
-
