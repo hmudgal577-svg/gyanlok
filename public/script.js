@@ -1,15 +1,15 @@
 /**
- * GyanLok â€” script.js (v2)
+ * GyanLok — script.js (v2)
  *
  * Sections:
- *  1.  DATA â€” School Boards (CBSE/ICSE, classes, subjects, books, chapters)
- *  2.  DATA â€” Test Sheets (UTP, Worksheets, Mock Exam)
+ *  1.  DATA — School Boards (CBSE/ICSE, classes, subjects, books, chapters)
+ *  2.  DATA — Test Sheets (UTP, Worksheets, Mock Exam)
  *  3.  SVGS & HELPERS
  *  4.  NAVBAR (hamburger, dropdown, scroll shadow, active link)
  *  5.  FADE-IN (IntersectionObserver)
- *  6.  SCHOOL BOARDS â€” render logic
- *  7.  TEST SHEETS â€” render logic
- *  8.  CONTACT FORM â€” validation
+ *  6.  SCHOOL BOARDS — render logic
+ *  7.  TEST SHEETS — render logic
+ *  8.  CONTACT FORM — validation
  *  9.  REVISION NOTIFY FORM
  * 10.  DOCUMENT VIEWER MODAL
  * 11.  UPLOAD ANSWER SHEET MODAL
@@ -17,9 +17,9 @@
  * 13.  TOAST HELPER
  */
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   1. DATA â€” SCHOOL BOARDS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════
+   1. DATA — SCHOOL BOARDS
+══════════════════════════════════════════ */
 const BOARDS_DATA = {
   CBSE: {
     classes: [6, 7, 8, 9, 10],
@@ -33,51 +33,51 @@ const BOARDS_DATA = {
     resources: {
       10: {
         Hindi: {
-          syllabus:      { title: 'Hindi B Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'Hindi B Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'Hindi B Marking Scheme 2026' },
           books: [
             {
               name: 'Sparsh',
-              subtitle: 'Class 10 Hindi B â€” Main Textbook',
+              subtitle: 'Class 10 Hindi B — Main Textbook',
               color: '#3A7BD5',
               chapters: [
-                { num: 1,  title: 'Sakhiyan aur Sabad â€” Kabir',                       worksheets: 2 },
-                { num: 2,  title: 'Dohe â€” Mirabai',                                    worksheets: 2 },
-                { num: 3,  title: 'Dohe â€” Bihari Lal',                                 worksheets: 2 },
-                { num: 4,  title: 'Manushyata â€” Maithili Sharan Gupt',                 worksheets: 1 },
-                { num: 5,  title: 'Parvat Pradesh Mein Pavs â€” Sumitranandan Pant',     worksheets: 2 },
-                { num: 6,  title: 'Madhur Madhur Mere Deepak Jal â€” Mahadevi Verma',   worksheets: 1 },
-                { num: 7,  title: 'Top â€” Dharamvir Bharati',                           worksheets: 1 },
-                { num: 8,  title: 'Kar Chale Hum Fida â€” Kaifi Azmi',                  worksheets: 1 },
-                { num: 9,  title: 'Aatmtran â€” Harivansh Rai Bachchan',                worksheets: 1 },
-                { num: 10, title: 'Bade Bhai Sahab â€” Premchand',                       worksheets: 2 },
-                { num: 11, title: 'Diary Ka Ek Panna â€” Sitaram Sehgal',               worksheets: 1 },
-                { num: 12, title: 'Tantara Vamiro Katha â€” Leeladhar Mandloi',         worksheets: 1 },
-                { num: 13, title: 'Teesri Kasam ke Shilpkar â€” Prahlad Agarwal',       worksheets: 1 },
-                { num: 14, title: 'Girgit â€” Anton Chekhov',                            worksheets: 1 },
-                { num: 15, title: 'Ab Kahan Doosron ke Dukh â€” Nida Fazli',            worksheets: 1 },
-                { num: 16, title: 'Pathjhad Mein Tuti Pattiyaan â€” Gurunarayan Sharma',worksheets: 1 },
-                { num: 17, title: 'Kartoos â€” Habib Tanvir',                            worksheets: 2 },
+                { num: 1,  title: 'Sakhiyan aur Sabad — Kabir',                       worksheets: 2 },
+                { num: 2,  title: 'Dohe — Mirabai',                                    worksheets: 2 },
+                { num: 3,  title: 'Dohe — Bihari Lal',                                 worksheets: 2 },
+                { num: 4,  title: 'Manushyata — Maithili Sharan Gupt',                 worksheets: 1 },
+                { num: 5,  title: 'Parvat Pradesh Mein Pavs — Sumitranandan Pant',     worksheets: 2 },
+                { num: 6,  title: 'Madhur Madhur Mere Deepak Jal — Mahadevi Verma',   worksheets: 1 },
+                { num: 7,  title: 'Top — Dharamvir Bharati',                           worksheets: 1 },
+                { num: 8,  title: 'Kar Chale Hum Fida — Kaifi Azmi',                  worksheets: 1 },
+                { num: 9,  title: 'Aatmtran — Harivansh Rai Bachchan',                worksheets: 1 },
+                { num: 10, title: 'Bade Bhai Sahab — Premchand',                       worksheets: 2 },
+                { num: 11, title: 'Diary Ka Ek Panna — Sitaram Sehgal',               worksheets: 1 },
+                { num: 12, title: 'Tantara Vamiro Katha — Leeladhar Mandloi',         worksheets: 1 },
+                { num: 13, title: 'Teesri Kasam ke Shilpkar — Prahlad Agarwal',       worksheets: 1 },
+                { num: 14, title: 'Girgit — Anton Chekhov',                            worksheets: 1 },
+                { num: 15, title: 'Ab Kahan Doosron ke Dukh — Nida Fazli',            worksheets: 1 },
+                { num: 16, title: 'Pathjhad Mein Tuti Pattiyaan — Gurunarayan Sharma',worksheets: 1 },
+                { num: 17, title: 'Kartoos — Habib Tanvir',                            worksheets: 2 },
               ]
             },
             {
               name: 'Sanchayan',
-              subtitle: 'Class 10 Hindi B â€” Supplementary Reader',
+              subtitle: 'Class 10 Hindi B — Supplementary Reader',
               color: '#2BA899',
               chapters: [
-                { num: 1, title: 'Harihar Kaka â€” Mithleshwar',           worksheets: 2 },
-                { num: 2, title: 'Sapno Ke Se Din â€” Gurudayal Singh',    worksheets: 2 },
-                { num: 3, title: 'Topi Shukla â€” Rahi Masoom Raza',       worksheets: 1 },
+                { num: 1, title: 'Harihar Kaka — Mithleshwar',           worksheets: 2 },
+                { num: 2, title: 'Sapno Ke Se Din — Gurudayal Singh',    worksheets: 2 },
+                { num: 3, title: 'Topi Shukla — Rahi Masoom Raza',       worksheets: 1 },
               ]
             }
           ]
         },
         Mathematics: {
-          syllabus:      { title: 'Mathematics Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'Mathematics Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'Mathematics Marking Scheme 2026' },
           books: [
             {
-              name: 'Mathematics â€” Standard',
+              name: 'Mathematics — Standard',
               subtitle: 'Class 10 Mathematics (NCERT)',
               color: '#E05555',
               chapters: [
@@ -100,12 +100,12 @@ const BOARDS_DATA = {
           ]
         },
         Science: {
-          syllabus:      { title: 'Science Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'Science Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'Science Marking Scheme 2026' },
           books: [
             {
               name: 'Science',
-              subtitle: 'Class 10 Science â€” Physics, Chemistry & Biology (NCERT)',
+              subtitle: 'Class 10 Science — Physics, Chemistry & Biology (NCERT)',
               color: '#7EC8A4',
               chapters: [
                 { num: 1,  title: 'Chemical Reactions and Equations',          worksheets: 2 },
@@ -116,7 +116,7 @@ const BOARDS_DATA = {
                 { num: 7,  title: 'Control and Coordination',                  worksheets: 2 },
                 { num: 8,  title: 'How do Organisms Reproduce?',               worksheets: 1 },
                 { num: 9,  title: 'Heredity',                                  worksheets: 1 },
-                { num: 10, title: 'Light â€” Reflection and Refraction',         worksheets: 2 },
+                { num: 10, title: 'Light — Reflection and Refraction',         worksheets: 2 },
                 { num: 11, title: 'Human Eye and the Colourful World',         worksheets: 1 },
                 { num: 12, title: 'Electricity',                               worksheets: 2 },
                 { num: 13, title: 'Magnetic Effects of Electric Current',      worksheets: 2 },
@@ -127,11 +127,11 @@ const BOARDS_DATA = {
           ]
         },
         'Social Science': {
-          syllabus:      { title: 'Social Science Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'Social Science Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'Social Science Marking Scheme 2026' },
           books: [
             {
-              name: 'India and the Contemporary World â€” II (History)',
+              name: 'India and the Contemporary World — II (History)',
               subtitle: 'Class 10 History',
               color: '#9B59B6',
               chapters: [
@@ -143,7 +143,7 @@ const BOARDS_DATA = {
               ]
             },
             {
-              name: 'Contemporary India â€” II (Geography)',
+              name: 'Contemporary India — II (Geography)',
               subtitle: 'Class 10 Geography',
               color: '#27AE60',
               chapters: [
@@ -159,20 +159,20 @@ const BOARDS_DATA = {
           ]
         },
         English: {
-          syllabus:      { title: 'English Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'English Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'English Marking Scheme 2026' },
           books: [
             {
               name: 'First Flight',
-              subtitle: 'Class 10 English â€” Main Textbook',
+              subtitle: 'Class 10 English — Main Textbook',
               color: '#F5A623',
               chapters: [
                 { num: 1,  title: 'A Letter to God',                          worksheets: 2 },
                 { num: 2,  title: 'Nelson Mandela: Long Walk to Freedom',     worksheets: 2 },
                 { num: 3,  title: 'Two Stories About Flying',                 worksheets: 1 },
                 { num: 4,  title: 'From the Diary of Anne Frank',             worksheets: 2 },
-                { num: 5,  title: 'The Hundred Dresses â€” I',                  worksheets: 1 },
-                { num: 6,  title: 'The Hundred Dresses â€” II',                 worksheets: 1 },
+                { num: 5,  title: 'The Hundred Dresses — I',                  worksheets: 1 },
+                { num: 6,  title: 'The Hundred Dresses — II',                 worksheets: 1 },
                 { num: 7,  title: 'Glimpses of India',                        worksheets: 1 },
                 { num: 8,  title: 'Mijbil the Otter',                         worksheets: 1 },
                 { num: 9,  title: 'Madam Rides the Bus',                      worksheets: 1 },
@@ -182,7 +182,7 @@ const BOARDS_DATA = {
             },
             {
               name: 'Footprints Without Feet',
-              subtitle: 'Class 10 English â€” Supplementary Reader',
+              subtitle: 'Class 10 English — Supplementary Reader',
               color: '#E8900A',
               chapters: [
                 { num: 1,  title: 'A Triumph of Surgery',                     worksheets: 1 },
@@ -215,7 +215,7 @@ const BOARDS_DATA = {
     resources: {
       10: {
         Mathematics: {
-          syllabus:      { title: 'ICSE Mathematics Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'ICSE Mathematics Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'ICSE Mathematics Marking Scheme 2026' },
           books: [
             {
@@ -223,19 +223,19 @@ const BOARDS_DATA = {
               subtitle: 'Class 10 ICSE Mathematics',
               color: '#E05555',
               chapters: [
-                { num: 1, title: 'Commercial Mathematics â€” GST, Shares, Compound Interest',  worksheets: 2 },
-                { num: 2, title: 'Algebra â€” Polynomials, Quadratic Equations',               worksheets: 2 },
-                { num: 3, title: 'Geometry â€” Similarity, Loci, Tangents to Circles',         worksheets: 2 },
-                { num: 4, title: 'Mensuration â€” Cylinder, Cone, Sphere',                     worksheets: 2 },
+                { num: 1, title: 'Commercial Mathematics — GST, Shares, Compound Interest',  worksheets: 2 },
+                { num: 2, title: 'Algebra — Polynomials, Quadratic Equations',               worksheets: 2 },
+                { num: 3, title: 'Geometry — Similarity, Loci, Tangents to Circles',         worksheets: 2 },
+                { num: 4, title: 'Mensuration — Cylinder, Cone, Sphere',                     worksheets: 2 },
                 { num: 5, title: 'Trigonometry',                                             worksheets: 2 },
-                { num: 6, title: 'Statistics â€” Mean, Median, Ogive, Histogram',              worksheets: 2 },
+                { num: 6, title: 'Statistics — Mean, Median, Ogive, Histogram',              worksheets: 2 },
                 { num: 7, title: 'Probability',                                              worksheets: 1 },
               ]
             }
           ]
         },
         Physics: {
-          syllabus:      { title: 'ICSE Physics Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'ICSE Physics Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'ICSE Physics Marking Scheme 2026' },
           books: [
             {
@@ -244,7 +244,7 @@ const BOARDS_DATA = {
               color: '#3A7BD5',
               chapters: [
                 { num: 1, title: 'Force, Work, Power and Energy',             worksheets: 2 },
-                { num: 2, title: 'Light â€” Refraction and Lenses',             worksheets: 2 },
+                { num: 2, title: 'Light — Refraction and Lenses',             worksheets: 2 },
                 { num: 3, title: 'Sound',                                     worksheets: 1 },
                 { num: 4, title: 'Electricity and Magnetism',                 worksheets: 2 },
                 { num: 5, title: 'Heat',                                      worksheets: 1 },
@@ -254,7 +254,7 @@ const BOARDS_DATA = {
           ]
         },
         Chemistry: {
-          syllabus:      { title: 'ICSE Chemistry Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'ICSE Chemistry Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'ICSE Chemistry Marking Scheme 2026' },
           books: [
             {
@@ -275,12 +275,12 @@ const BOARDS_DATA = {
           ]
         },
         Hindi: {
-          syllabus:      { title: 'ICSE Hindi Syllabus 2026â€“27', isNew: true },
+          syllabus:      { title: 'ICSE Hindi Syllabus 2026–27', isNew: true },
           markingScheme: { title: 'ICSE Hindi Marking Scheme 2026' },
           books: [
             {
-              name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤° â€” à¤—à¤¦à¥à¤¯ (Prose)',
-              subtitle: 'Class 10 ICSE Hindi â€” Gadya Khand Â· 10 Kahaniyaan',
+              name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤° — à¤—à¤¦à¥à¤¯ (Prose)',
+              subtitle: 'Class 10 ICSE Hindi — Gadya Khand Â· 10 Kahaniyaan',
               color: '#9B59B6',
               chapters: [
                 { num: 1,  title: 'à¤¬à¤¾à¤¤ à¤…à¤ à¤¨à¥à¤¨à¥€ à¤•à¥€',         worksheets: 2 },
@@ -296,8 +296,8 @@ const BOARDS_DATA = {
               ]
             },
             {
-              name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤° â€” à¤ªà¤¦à¥à¤¯ (Poetry)',
-              subtitle: 'Class 10 ICSE Hindi â€” Padya Khand Â· 9 Kavitaen',
+              name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤° — à¤ªà¤¦à¥à¤¯ (Poetry)',
+              subtitle: 'Class 10 ICSE Hindi — Padya Khand Â· 9 Kavitaen',
               color: '#E8900A',
               chapters: [
                 { num: 1, title: 'à¤¸à¤¾à¤–à¥€',                    worksheets: 2 },
@@ -313,7 +313,7 @@ const BOARDS_DATA = {
             },
             {
               name: 'à¤à¤•à¤¾à¤‚à¤•à¥€ à¤¸à¤‚à¤šà¤¯',
-              subtitle: 'Class 10 ICSE Hindi â€” Ekanki Â· 6 One-Act Plays',
+              subtitle: 'Class 10 ICSE Hindi — Ekanki Â· 6 One-Act Plays',
               color: '#2BA899',
               chapters: [
                 { num: 1, title: 'à¤¸à¤‚à¤¸à¥à¤•à¤¾à¤° à¤”à¤° à¤­à¤¾à¤µà¤¨à¤¾',        worksheets: 2 },
@@ -326,7 +326,7 @@ const BOARDS_DATA = {
             },
             {
               name: 'à¤¨à¤¯à¤¾ à¤°à¤¾à¤¸à¥à¤¤à¤¾ (à¤‰à¤ªà¤¨à¥à¤¯à¤¾à¤¸)',
-              subtitle: 'Class 10 ICSE Hindi â€” Novel Â· à¤…à¤§à¥à¤¯à¤¾à¤¯ à¤•à¥à¤°à¤®à¤µà¤¾à¤° (Publisher: Evergreen / Morning Star)',
+              subtitle: 'Class 10 ICSE Hindi — Novel Â· à¤…à¤§à¥à¤¯à¤¾à¤¯ à¤•à¥à¤°à¤®à¤µà¤¾à¤° (Publisher: Evergreen / Morning Star)',
               color: '#E05555',
               chapters: [
                 { num: 1, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 1', worksheets: 1 },
@@ -346,36 +346,36 @@ const BOARDS_DATA = {
   }
 };
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   2. DATA â€” TEST SHEETS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════
+   2. DATA — TEST SHEETS
+══════════════════════════════════════════ */
 const TEST_DATA = {
   UTP: {
     CBSE: {
       10: [
-        { id: 'UTP_CBSE_10_01', title: 'Unit Test Paper 1 â€” Science',       subject: 'Science',       date: 'Jan 2026', pages: 4, color: '#7EC8A4' },
-        { id: 'UTP_CBSE_10_02', title: 'Unit Test Paper 2 â€” Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
-        { id: 'UTP_CBSE_10_03', title: 'Unit Test Paper 3 â€” Social Science',subject: 'Social Science',date: 'May 2026', pages: 3, color: '#9B59B6' },
-        { id: 'UTP_CBSE_10_04', title: 'Unit Test Paper 4 â€” Hindi',         subject: 'Hindi',         date: 'Jun 2026', pages: 3, color: '#3A7BD5' },
+        { id: 'UTP_CBSE_10_01', title: 'Unit Test Paper 1 — Science',       subject: 'Science',       date: 'Jan 2026', pages: 4, color: '#7EC8A4' },
+        { id: 'UTP_CBSE_10_02', title: 'Unit Test Paper 2 — Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_CBSE_10_03', title: 'Unit Test Paper 3 — Social Science',subject: 'Social Science',date: 'May 2026', pages: 3, color: '#9B59B6' },
+        { id: 'UTP_CBSE_10_04', title: 'Unit Test Paper 4 — Hindi',         subject: 'Hindi',         date: 'Jun 2026', pages: 3, color: '#3A7BD5' },
       ],
       9: [
-        { id: 'UTP_CBSE_09_01', title: 'Unit Test Paper 1 â€” Science',       subject: 'Science',       date: 'Feb 2026', pages: 4, color: '#7EC8A4' },
-        { id: 'UTP_CBSE_09_02', title: 'Unit Test Paper 2 â€” Mathematics',   subject: 'Mathematics',   date: 'Apr 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_CBSE_09_01', title: 'Unit Test Paper 1 — Science',       subject: 'Science',       date: 'Feb 2026', pages: 4, color: '#7EC8A4' },
+        { id: 'UTP_CBSE_09_02', title: 'Unit Test Paper 2 — Mathematics',   subject: 'Mathematics',   date: 'Apr 2026', pages: 4, color: '#E05555' },
       ],
       8: [
-        { id: 'UTP_CBSE_08_01', title: 'Unit Test Paper 1 â€” Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 3, color: '#E05555' },
+        { id: 'UTP_CBSE_08_01', title: 'Unit Test Paper 1 — Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 3, color: '#E05555' },
       ],
       7: [],
       6: [],
     },
     ICSE: {
       10: [
-        { id: 'UTP_ICSE_10_01', title: 'Unit Test Paper 1 â€” Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 4, color: '#E05555' },
-        { id: 'UTP_ICSE_10_02', title: 'Unit Test Paper 2 â€” Physics',       subject: 'Physics',       date: 'Apr 2026', pages: 4, color: '#3A7BD5' },
-        { id: 'UTP_ICSE_10_03', title: 'Unit Test Paper 3 â€” Chemistry',     subject: 'Chemistry',     date: 'Jun 2026', pages: 3, color: '#7EC8A4' },
+        { id: 'UTP_ICSE_10_01', title: 'Unit Test Paper 1 — Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_ICSE_10_02', title: 'Unit Test Paper 2 — Physics',       subject: 'Physics',       date: 'Apr 2026', pages: 4, color: '#3A7BD5' },
+        { id: 'UTP_ICSE_10_03', title: 'Unit Test Paper 3 — Chemistry',     subject: 'Chemistry',     date: 'Jun 2026', pages: 3, color: '#7EC8A4' },
       ],
       9: [
-        { id: 'UTP_ICSE_09_01', title: 'Unit Test Paper 1 â€” Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_ICSE_09_01', title: 'Unit Test Paper 1 — Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
       ],
       8: [], 7: [], 6: [],
     }
@@ -383,27 +383,27 @@ const TEST_DATA = {
   Worksheets: {
     CBSE: {
       10: [
-        { id: 'WS_CBSE_10_01', title: 'Worksheet 1 â€” Trigonometry',          subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
-        { id: 'WS_CBSE_10_02', title: 'Worksheet 2 â€” Chemical Reactions',    subject: 'Science',     date: 'Feb 2026', pages: 3, color: '#7EC8A4' },
-        { id: 'WS_CBSE_10_03', title: 'Worksheet 3 â€” Hindi Grammar',         subject: 'Hindi',       date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
-        { id: 'WS_CBSE_10_04', title: 'Worksheet 4 â€” Electricity',           subject: 'Science',     date: 'Apr 2026', pages: 2, color: '#7EC8A4' },
+        { id: 'WS_CBSE_10_01', title: 'Worksheet 1 — Trigonometry',          subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_CBSE_10_02', title: 'Worksheet 2 — Chemical Reactions',    subject: 'Science',     date: 'Feb 2026', pages: 3, color: '#7EC8A4' },
+        { id: 'WS_CBSE_10_03', title: 'Worksheet 3 — Hindi Grammar',         subject: 'Hindi',       date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
+        { id: 'WS_CBSE_10_04', title: 'Worksheet 4 — Electricity',           subject: 'Science',     date: 'Apr 2026', pages: 2, color: '#7EC8A4' },
       ],
       9: [
-        { id: 'WS_CBSE_09_01', title: 'Worksheet 1 â€” Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
-        { id: 'WS_CBSE_09_02', title: 'Worksheet 2 â€” Force & Motion',        subject: 'Science',     date: 'Mar 2026', pages: 2, color: '#7EC8A4' },
+        { id: 'WS_CBSE_09_01', title: 'Worksheet 1 — Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_CBSE_09_02', title: 'Worksheet 2 — Force & Motion',        subject: 'Science',     date: 'Mar 2026', pages: 2, color: '#7EC8A4' },
       ],
       8: [
-        { id: 'WS_CBSE_08_01', title: 'Worksheet 1 â€” Rational Numbers',      subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_CBSE_08_01', title: 'Worksheet 1 — Rational Numbers',      subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
       ],
       7: [], 6: [],
     },
     ICSE: {
       10: [
-        { id: 'WS_ICSE_10_01', title: 'Worksheet 1 â€” Commercial Maths',      subject: 'Mathematics', date: 'Jan 2026', pages: 3, color: '#E05555' },
-        { id: 'WS_ICSE_10_02', title: 'Worksheet 2 â€” Light (Refraction)',     subject: 'Physics',     date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_01', title: 'Worksheet 1 — Commercial Maths',      subject: 'Mathematics', date: 'Jan 2026', pages: 3, color: '#E05555' },
+        { id: 'WS_ICSE_10_02', title: 'Worksheet 2 — Light (Refraction)',     subject: 'Physics',     date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
       ],
       9: [
-        { id: 'WS_ICSE_09_01', title: 'Worksheet 1 â€” Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_ICSE_09_01', title: 'Worksheet 1 — Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
       ],
       8: [], 7: [], 6: [],
     }
@@ -411,28 +411,28 @@ const TEST_DATA = {
   MockExam: {
     CBSE: {
       10: [
-        { id: 'MOCK_CBSE_10_01', title: 'Mock Exam 1 â€” Science (Full Paper)',    subject: 'Science',     date: 'Nov 2025', pages: 8, color: '#7EC8A4' },
-        { id: 'MOCK_CBSE_10_02', title: 'Mock Exam 2 â€” Mathematics (Full Paper)',subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
-        { id: 'MOCK_CBSE_10_03', title: 'Mock Exam 3 â€” Hindi (Full Paper)',      subject: 'Hindi',       date: 'Dec 2025', pages: 5, color: '#3A7BD5' },
+        { id: 'MOCK_CBSE_10_01', title: 'Mock Exam 1 — Science (Full Paper)',    subject: 'Science',     date: 'Nov 2025', pages: 8, color: '#7EC8A4' },
+        { id: 'MOCK_CBSE_10_02', title: 'Mock Exam 2 — Mathematics (Full Paper)',subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
+        { id: 'MOCK_CBSE_10_03', title: 'Mock Exam 3 — Hindi (Full Paper)',      subject: 'Hindi',       date: 'Dec 2025', pages: 5, color: '#3A7BD5' },
       ],
       9: [
-        { id: 'MOCK_CBSE_09_01', title: 'Mock Exam 1 â€” Annual Paper (All Subjects)', subject: 'All Subjects', date: 'Oct 2025', pages: 10, color: '#9B59B6' },
+        { id: 'MOCK_CBSE_09_01', title: 'Mock Exam 1 — Annual Paper (All Subjects)', subject: 'All Subjects', date: 'Oct 2025', pages: 10, color: '#9B59B6' },
       ],
       8: [], 7: [], 6: [],
     },
     ICSE: {
       10: [
-        { id: 'MOCK_ICSE_10_01', title: 'Mock Exam 1 â€” Mathematics (Full Paper)', subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
-        { id: 'MOCK_ICSE_10_02', title: 'Mock Exam 2 â€” Physics (Full Paper)',      subject: 'Physics',     date: 'Dec 2025', pages: 6, color: '#3A7BD5' },
+        { id: 'MOCK_ICSE_10_01', title: 'Mock Exam 1 — Mathematics (Full Paper)', subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
+        { id: 'MOCK_ICSE_10_02', title: 'Mock Exam 2 — Physics (Full Paper)',      subject: 'Physics',     date: 'Dec 2025', pages: 6, color: '#3A7BD5' },
       ],
       9: [], 8: [], 7: [], 6: [],
     }
   }
 };
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    3. SVG HELPERS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 const SVG = {
   book: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
   file: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
@@ -447,9 +447,9 @@ const SVG = {
   chevD: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`,
 };
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    STATE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 let state = {
   board: 'CBSE',
   cls:   10,
@@ -458,9 +458,9 @@ let state = {
   testBoard: 'CBSE',
 };
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    DOM READY
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initFadeIn();
@@ -473,9 +473,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollTop();
 });
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    4. NAVBAR
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function initNavbar() {
   const hamburger  = document.getElementById('hamburger');
   const navLinks   = document.getElementById('nav-links');
@@ -551,9 +551,9 @@ function initNavbar() {
   sections.forEach(s => secObs.observe(s));
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    5. FADE-IN
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 let fadeObserver;
 function initFadeIn() {
   fadeObserver = new IntersectionObserver((entries) => {
@@ -576,9 +576,9 @@ function observeFade(el) {
   else el.classList.add('visible');
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    6. SCHOOL BOARDS SECTION
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function initBoardsSection() {
   /* Board tab clicks */
   document.querySelectorAll('.board-tab').forEach(tab => {
@@ -652,7 +652,7 @@ function renderBoardContent() {
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto var(--sp-sm)" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
-        <h3>${state.subj} â€” Class ${state.cls} (${state.board})</h3>
+        <h3>${state.subj} — Class ${state.cls} (${state.board})</h3>
         <p>Resources for this subject are being prepared and will be available soon.<br/>
         <a href="#contact" style="color:var(--accent);font-weight:600">Contact a mentor</a> for study material in the meantime.</p>
       </div>`;
@@ -670,7 +670,7 @@ function renderBoardContent() {
         <div class="rc-icon" style="background:#3A7BD5">${SVG.file}</div>
         <div class="rc-info">
           <strong>${syllabus.title} ${syllabus.isNew ? '<span class="new-badge">New</span>' : ''}</strong>
-          <span>Official Syllabus â€¢ PDF</span>
+          <span>Official Syllabus €¢ PDF</span>
         </div>
         <div class="rc-actions">
           <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${syllabus.title}')">${SVG.eye}</button>
@@ -684,7 +684,7 @@ function renderBoardContent() {
         <div class="rc-icon" style="background:#2BA899">${SVG.check}</div>
         <div class="rc-info">
           <strong>${markingScheme.title}</strong>
-          <span>Marking Scheme â€¢ PDF</span>
+          <span>Marking Scheme €¢ PDF</span>
         </div>
         <div class="rc-actions">
           <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${markingScheme.title}')">${SVG.eye}</button>
@@ -704,7 +704,7 @@ function renderBoardContent() {
             <h3>${book.name}</h3>
             <span>${book.subtitle}</span>
           </div>
-          <button class="full-book-btn" onclick="openDocViewer('${book.name} â€” Complete Book')">
+          <button class="full-book-btn" onclick="openDocViewer('${book.name} — Complete Book')">
             ${SVG.dl} Complete Book
           </button>
         </div>
@@ -740,12 +740,12 @@ function renderChapter(book, ch) {
     </div>`).join('');
 
   const resources = [
-    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download Chapter',              action: `handleDownload('${book.name} â€” Chapter ${ch.num}')` },
-    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary and Objectives',         action: `openDocViewer('${book.name} Ch.${ch.num} â€” Summary')` },
-    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Muhavare / Word Meanings',       action: `openDocViewer('${book.name} Ch.${ch.num} â€” Muhavare')` },
-    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Questions and Answers',          action: `openDocViewer('${book.name} Ch.${ch.num} â€” Q&A')` },
-    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Additional Practice Questions',  action: `openDocViewer('${book.name} Ch.${ch.num} â€” Additional Qs')` },
-    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'Previous Year Questions (PYQ)',  action: `openDocViewer('${book.name} Ch.${ch.num} â€” PYQ')` },
+    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download Chapter',              action: `handleDownload('${book.name} — Chapter ${ch.num}')` },
+    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary and Objectives',         action: `openDocViewer('${book.name} Ch.${ch.num} — Summary')` },
+    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Muhavare / Word Meanings',       action: `openDocViewer('${book.name} Ch.${ch.num} — Muhavare')` },
+    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Questions and Answers',          action: `openDocViewer('${book.name} Ch.${ch.num} — Q&A')` },
+    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Additional Practice Questions',  action: `openDocViewer('${book.name} Ch.${ch.num} — Additional Qs')` },
+    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'Previous Year Questions (PYQ)',  action: `openDocViewer('${book.name} Ch.${ch.num} — PYQ')` },
   ];
 
   return `
@@ -762,7 +762,7 @@ function renderChapter(book, ch) {
               <div class="ch-res-item" role="button" tabindex="0" onclick="${r.action}">
                 <div class="ch-res-icon" style="background:${r.bg};color:${r.color}">${r.icon}</div>
                 <span class="ch-res-label">${r.label}</span>
-                <span class="ch-res-action">Open â†’</span>
+                <span class="ch-res-action">Open †’</span>
               </div>`).join('')}
           </div>
           ${ch.worksheets > 0 ? `
@@ -774,9 +774,9 @@ function renderChapter(book, ch) {
     </div>`;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    7. TEST SHEETS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function initTestSheets() {
   /* Category tabs */
   document.querySelectorAll('.test-tab').forEach(tab => {
@@ -876,9 +876,9 @@ function renderTestPaperCard(p) {
     </div>`;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    8. CONTACT FORM
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
@@ -948,9 +948,9 @@ function initContactForm() {
   });
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    9. REVISION NOTIFY FORM
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function initRevisionNotify() {
   const form = document.getElementById('notify-form');
   if (!form) return;
@@ -982,9 +982,9 @@ function initRevisionNotify() {
   });
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    10. DOCUMENT VIEWER MODAL
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function initDocModal() {
   const modal     = document.getElementById('doc-modal');
   const closeBtn  = document.getElementById('doc-modal-close');
@@ -1011,9 +1011,9 @@ function openDocViewer(title) {
   openModal(modal);
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    11. UPLOAD ANSWER SHEET MODAL
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function initUploadModal() {
   const modal      = document.getElementById('upload-modal');
   const closeBtn   = document.getElementById('upload-modal-close');
@@ -1123,9 +1123,9 @@ function openUploadModal(resourceName, resourceId) {
   openModal(modal);
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    12. SCROLL TO TOP
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function initScrollTop() {
   const btn = document.getElementById('scroll-top');
   if (!btn) return;
@@ -1133,9 +1133,9 @@ function initScrollTop() {
   btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════
    13. HELPERS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════ */
 function openModal(modal) {
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
@@ -1161,7 +1161,7 @@ function clearError(el, errId) {
 }
 
 function handleDownload(resourceName) {
-  showToast(`"${resourceName}" â€” will be available for download soon. Contact a mentor for direct access.`);
+  showToast(`"${resourceName}" — will be available for download soon. Contact a mentor for direct access.`);
 }
 
 function simulateSubmit(btn, paperId) {
