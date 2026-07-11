@@ -51,17 +51,23 @@ try {
 let db = null;
 let usingDb = false;
 try {
-  db = require('./db');
-  // Test connection (non-blocking)
-  db.query('SELECT 1').then(() => {
-    usingDb = true;
-    console.log('[DB] PostgreSQL connected ✓');
-  }).catch(() => {
-    usingDb = false;
-    console.log('[DB] PostgreSQL not available → using JSON file storage');
-  });
+  if (!process.env.DATABASE_URL) {
+    console.log('[DB] DATABASE_URL not set → using JSON file storage');
+  } else {
+    console.log('[DB] DATABASE_URL found, connecting to PostgreSQL...');
+    db = require('./db');
+    db.query('SELECT 1').then(() => {
+      usingDb = true;
+      console.log('[DB] PostgreSQL (Supabase) connected ✓');
+    }).catch((err) => {
+      usingDb = false;
+      console.error('[DB] PostgreSQL connection FAILED:', err.message);
+      console.log('[DB] Falling back to JSON file storage');
+    });
+  }
 } catch (e) {
-  console.log('[DB] PostgreSQL module not loaded → using JSON file storage');
+  console.error('[DB] PostgreSQL module error:', e.message);
+  console.log('[DB] Falling back to JSON file storage');
 }
 
 // ─── JSON File Storage helpers ─────────────────────────────────────────────
@@ -739,10 +745,26 @@ app.patch('/api/admin/mentor-request/:id/status', auth, async (req, res) => {
 });
 
 // ─── Health check ────────────────────────────────────────────────────────────
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  let dbStatus = 'not-configured';
+  let dbError  = null;
+  if (process.env.DATABASE_URL) {
+    try {
+      await db.query('SELECT 1');
+      dbStatus = 'supabase-connected';
+      usingDb = true;
+    } catch(e) {
+      dbStatus = 'supabase-error';
+      dbError  = e.message;
+      usingDb  = false;
+    }
+  } else {
+    dbStatus = 'no-DATABASE_URL';
+  }
   res.json({
     status:       'ok',
-    db:           usingDb ? 'supabase-postgresql' : 'json-files',
+    db:           dbStatus,
+    db_error:     dbError,
     fileStorage:  usingCloudinary ? 'cloudinary' : 'local-disk',
     ts:           new Date().toISOString()
   });
