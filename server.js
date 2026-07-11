@@ -49,19 +49,49 @@ function writeJson(file, data) {
   fs.writeFileSync(path.join(DATA_DIR, file), JSON.stringify(data, null, 2), 'utf8');
 }
 
-// ─── Seed default admin if no users exist ──────────────────────────────────
+// ─── Seed or Update admin user based on Env variables ────────────────────────
 (async () => {
-  const users = readJson('users.json', []);
-  if (users.length === 0) {
-    const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'Admin@123', 12);
-    users.push({
-      id: 1,
-      email: process.env.ADMIN_EMAIL || 'admin@gyanlok.in',
-      password_hash: hash,
-      role: 'admin'
-    });
-    writeJson('users.json', users);
-    console.log('[INIT] Default admin created → email: admin@gyanlok.in  password: Admin@123');
+  const adminEmail = process.env.ADMIN_EMAIL || 'ektaverma09.work@gmail.com';
+  const adminPassword = process.env.ADMIN_PASSWORD || '99722 47410';
+
+  if (usingDb) {
+    try {
+      const res = await db.query("SELECT * FROM users WHERE role = 'admin'");
+      const hash = await bcrypt.hash(adminPassword, 12);
+      if (res.rows.length === 0) {
+        await db.query("INSERT INTO users (email, password_hash, role) VALUES ($1, $2, 'admin')", [adminEmail, hash]);
+        console.log(`[INIT] Admin created in database: ${adminEmail}`);
+      } else {
+        const currentAdmin = res.rows[0];
+        if (currentAdmin.email !== adminEmail) {
+          await db.query('UPDATE users SET email = $1, password_hash = $2 WHERE id = $3', [adminEmail, hash, currentAdmin.id]);
+          console.log(`[INIT] Admin updated in database: ${adminEmail}`);
+        }
+      }
+    } catch (e) {
+      console.error('[INIT-DB-ADMIN]', e);
+    }
+  } else {
+    const users = readJson('users.json', []);
+    const hash = await bcrypt.hash(adminPassword, 12);
+    const adminIndex = users.findIndex(u => u.role === 'admin');
+
+    if (adminIndex === -1) {
+      users.push({
+        id: Date.now(),
+        email: adminEmail,
+        password_hash: hash,
+        role: 'admin'
+      });
+      writeJson('users.json', users);
+      console.log(`[INIT] Admin created in JSON storage: ${adminEmail}`);
+    } else {
+      const currentAdmin = users[adminIndex];
+      currentAdmin.email = adminEmail;
+      currentAdmin.password_hash = hash;
+      writeJson('users.json', users);
+      console.log(`[INIT] Admin credentials synchronized with env vars: ${adminEmail}`);
+    }
   }
 })();
 
