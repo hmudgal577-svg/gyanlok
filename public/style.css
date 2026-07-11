@@ -1145,23 +1145,82 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   .board-tabs { gap: .5rem; }
   .board-tab { padding: .55rem 1.2rem; font-size: .88rem; }
 
-  .selector-row { flex-wrap: wrap; }
+  .selector-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    flex-wrap: nowrap;
+  }
+  .selector-label {
+    font-weight: 700;
+    margin-bottom: 0.1rem;
+    font-size: 0.88rem;
+  }
+  .pills-scroll {
+    width: 100%;
+  }
 
   .board-content-panel { padding: var(--sp-sm); border-radius: var(--r-lg); }
+
+  /* Book header responsive styling */
+  .book-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-sm);
+  }
+  .full-book-btn {
+    width: 100%;
+    justify-content: center;
+  }
 
   .chapter-header { padding: .7rem var(--sp-sm); }
   .chapter-body-inner { padding: 0 var(--sp-sm) var(--sp-sm); padding-top: var(--sp-sm); }
 
+  /* Worksheet items responsive stacking */
+  .worksheet-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .ws-actions {
+    justify-content: flex-end;
+    width: 100%;
+  }
+  .ws-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
   .test-tabs { flex-wrap: wrap; }
   .test-tab { padding: .48rem .9rem; font-size: .82rem; }
 
-  .tp-actions { grid-template-columns: 1fr 1fr; }
+  .tp-actions {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+  .tp-action-btn {
+    width: 100%;
+  }
 
   .contact-form { padding: var(--sp-md); }
 
   .footer-grid { grid-template-columns: 1fr; gap: var(--sp-md); }
 
-  .hero-stats { flex-wrap: wrap; justify-content: center; gap: var(--sp-sm); }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .stat {
+    font-size: 0.78rem;
+  }
+  .stat strong {
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 2px;
+  }
   .stat-divider { display: none; }
 
   .scroll-top { bottom: 1.25rem; right: 1.25rem; }
