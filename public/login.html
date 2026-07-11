@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GyanLok - Student & Parent Portal</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233A7BD5'/><path d='M9 10h14M9 16h9M9 22h12' stroke='white' stroke-width='2' stroke-linecap='round'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="login-style.css" />
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       UNIFIED LOGIN & SIGNUP SCREEN
+       ════════════════════════════════════════ -->
+  <div id="auth-container" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <a href="/" class="nav-logo auth-logo">
+          <span class="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="var(--accent)"/>
+              <path d="M9 10h14M9 16h9M9 22h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="logo-text">Gyan<span>Lok</span></span>
+        </a>
+        <h2 id="auth-title">Welcome Back</h2>
+        <p id="auth-subtitle">Log in as a student to access resources, upload answer sheets, and view mentor feedback.</p>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="auth-tabs" id="auth-tabs">
+        <button class="auth-tab active" id="tab-student">Student Portal</button>
+        <button class="auth-tab" id="tab-admin">Admin Portal</button>
+      </div>
+
+      <!-- Student Login Form -->
+      <form id="student-login-form" class="auth-form" novalidate>
+        <div class="form-group">
+          <label for="student-email">Email or Phone</label>
+          <input type="text" id="student-email" placeholder="e.g. student@gmail.com" required autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="student-password">Password</label>
+          <input type="password" id="student-password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <div class="auth-options">
+          <label class="remember-me">
+            <input type="checkbox" id="remember-student"> Remember me
+          </label>
+          <a href="#" class="forgot-pass" onclick="showToast('Password reset option coming soon. Contact a mentor!')">Forgot Password?</a>
+        </div>
+        <div id="student-error" class="error-box" hidden></div>
+        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+        <p class="auth-switch">New to GyanLok? <a href="#" id="go-signup">Create a student account</a></p>
+      </form>
+
+      <!-- Student Register Form -->
+      <form id="student-register-form" class="auth-form" novalidate hidden>
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" placeholder="e.g. Arjun Verma" required />
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email or Phone</label>
+          <input type="text" id="reg-email" placeholder="e.g. student@gmail.com" required />
+        </div>
+        <div class="form-group">
+          <label for="reg-class">Class</label>
+          <select id="reg-class" required>
+            <option value="">Select Class</option>
+            <option value="6">Class 6</option>
+            <option value="7">Class 7</option>
+            <option value="8">Class 8</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" placeholder="••••••••" required />
+        </div>
+        <div id="register-error" class="error-box" hidden></div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        <p class="auth-switch">Already have an account? <a href="#" id="go-login">Log in</a></p>
+      </form>
+
+      <!-- Admin Login Form -->
+      <form id="admin-login-form" class="auth-form" novalidate hidden>
+        <div class="form-group">
+          <label for="admin-email">Admin Email</label>
+          <input type="email" id="admin-email" placeholder="e.g. admin@gyanlok.in" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="admin-password">Password</label>
+          <input type="password" id="admin-password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <div id="admin-error" class="error-box" hidden></div>
+        <button type="submit" class="btn btn-primary btn-block">Admin Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       STUDENT PORTAL DASHBOARD MAIN PANEL
+       ════════════════════════════════════════ -->
+  <div id="portal-container" class="portal-wrapper" hidden>
+    
+    <!-- Sidebar Navigation -->
+    <aside class="portal-sidebar">
+      <div class="sidebar-brand">
+        <span class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="white"/>
+            <path d="M9 10h14M9 16h9M9 22h12" stroke="#3A7BD5" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-text">Gyan<span>Lok</span></span>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="menu-item active" data-target="student-overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          Dashboard
+        </button>
+        <button class="menu-item" data-target="student-submissions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          My Submissions
+        </button>
+        <button class="menu-item" data-target="student-mentor-chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Ask a Mentor
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <strong id="student-name-display">Student User</strong>
+          <span id="student-class-display">Class 10</span>
+        </div>
+        <button id="student-logout-btn" class="logout-btn" title="Log out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel Area -->
+    <main class="portal-main">
+      
+      <!-- HEADER -->
+      <header class="main-header">
+        <h1 id="portal-title-text">Dashboard</h1>
+        <div class="date-display" id="portal-date">Today</div>
+      </header>
+
+      <!-- PANELS CONTAINER -->
+      <div class="panels-container">
+
+        <!-- PANEL 1: OVERVIEW -->
+        <section id="student-overview" class="panel-section active">
+          <div class="welcome-banner">
+            <h2>Hello, <span id="welcome-name">Student</span>! 👋</h2>
+            <p>Welcome to your learning dashboard. Here you can view notifications, track worksheet evaluations, and talk directly to your class mentor.</p>
+          </div>
+
+          <div class="dashboard-cards-grid">
+            <div class="stat-card">
+              <div class="stat-icon sub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+              <div class="stat-info">
+                <span class="stat-label">Evaluated Papers</span>
+                <strong class="stat-value" id="count-evaluated">0</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon req"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+              <div class="stat-info">
+                <span class="stat-label">Vedic Maths Course</span>
+                <strong class="stat-value" id="vedic-status">Not Enrolled</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="classroom-info-box">
+            <h3>📢 Latest Class Alerts</h3>
+            <ul class="alerts-list">
+              <li>
+                <span class="alert-date">July 11, 2026</span>
+                <strong class="alert-text">Class 10 CBSE/ICSE revision classes are launching next month! Register under the revision section on the home page to get notified.</strong>
+              </li>
+              <li>
+                <span class="alert-date">July 10, 2026</span>
+                <strong class="alert-text">Syllabus for Hindi B and Math 2026-27 has been updated under CBSE and ICSE boards sections.</strong>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- PANEL 2: MY SUBMISSIONS -->
+        <section id="student-submissions" class="panel-section">
+          <div class="card">
+            <div class="card-header">
+              <h2>My Worksheet Submissions</h2>
+              <p>Check the status of your uploaded answer sheets and read comments from evaluating mentors.</p>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Resource Title</th>
+                    <th>Uploaded File</th>
+                    <th>Status</th>
+                    <th>Grade / Score</th>
+                    <th>Mentor Feedback</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="student-submissions-table-body">
+                  <tr><td colspan="6" class="no-data">You haven't submitted any answer sheets yet. Go to School Boards or Test Sheets section to download worksheets and submit them!</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANEL 3: MENTOR DOUBT BOX -->
+        <section id="student-mentor-chat" class="panel-section">
+          <div class="chat-layout">
+            <div class="chat-info-card">
+              <h3>Ask Your Mentor</h3>
+              <p>Type your doubt or question about any subject or chapter. Your mentor will review and reply here within 24 hours.</p>
+              <div class="mentor-profile">
+                <div class="mentor-avatar">M</div>
+                <div>
+                  <strong>Senior Mentor</strong>
+                  <span>GyanLok Support Desk</span>
+                </div>
+              </div>
+            </div>
+            <div class="chat-area">
+              <div class="chat-messages" id="chat-messages-container">
+                <div class="message system-msg">No active conversations. Type your doubt below to start a new chat.</div>
+              </div>
+              <form class="chat-input-bar" id="chat-form">
+                <input type="text" id="chat-input" placeholder="Type your doubt here..." required autocomplete="off" />
+                <button type="submit" class="btn btn-primary">Send</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Helper -->
+  <div id="gl-toast" role="status" aria-live="polite" style="display: none;"></div>
+
+  <script src="login-script.js"></script>
+</body>
+</html>

@@ -227,6 +227,117 @@ app.post('/api/admin/logout', (req, res) => {
 // GET /api/admin/me
 app.get('/api/admin/me', auth, (req, res) => res.json({ user: req.user }));
 
+// ────────────────────────────────────────────────────────────
+// Student Portal Endpoints
+// ────────────────────────────────────────────────────────────
+
+// POST /api/student/register
+app.post('/api/student/register', async (req, res) => {
+  const { name, email, class_num, password } = req.body;
+  if (!name || !email || !class_num || !password) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+
+  try {
+    const hash = await bcrypt.hash(password, 12);
+    let newUser;
+
+    if (usingDb) {
+      const existing = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+      if (existing.rows.length > 0) return res.status(400).json({ error: 'Email or phone already registered.' });
+
+      const result = await db.query(
+        "INSERT INTO users (name, email, password_hash, role, class_num) VALUES ($1, $2, $3, 'student', $4) RETURNING id, name, email, role, class_num",
+        [name, email, hash, parseInt(class_num)]
+      );
+      newUser = result.rows[0];
+    } else {
+      const users = readJson('users.json', []);
+      if (users.find(u => u.email === email)) return res.status(400).json({ error: 'Email or phone already registered.' });
+
+      newUser = { id: Date.now(), name, email, password_hash: hash, role: 'student', class_num: parseInt(class_num) };
+      users.push(newUser);
+      writeJson('users.json', users);
+    }
+
+    const token = jwt.sign({ id: newUser.id, name: newUser.name, email: newUser.email, role: 'student', class_num: newUser.class_num }, JWT_SECRET, { expiresIn: '1d' });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.json({ success: true, user: { name: newUser.name, email: newUser.email, role: 'student', class_num: newUser.class_num } });
+  } catch (err) {
+    console.error('[student-register]', err);
+    res.status(500).json({ error: 'Failed to create account.' });
+  }
+});
+
+// POST /api/student/login
+app.post('/api/student/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
+
+  try {
+    let user;
+    if (usingDb) {
+      const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+      user = result.rows[0];
+    } else {
+      const users = readJson('users.json', []);
+      user = users.find(u => u.email === email);
+    }
+
+    if (!user || user.role !== 'student') return res.status(401).json({ error: 'Invalid email/phone or password.' });
+
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) return res.status(401).json({ error: 'Invalid email/phone or password.' });
+
+    const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: 'student', class_num: user.class_num }, JWT_SECRET, { expiresIn: '1d' });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.json({ success: true, user: { name: user.name, email: user.email, role: 'student', class_num: user.class_num } });
+  } catch (err) {
+    console.error('[student-login]', err);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+// POST /api/student/logout
+app.post('/api/student/logout', (req, res) => {
+  res.clearCookie('token');
+  res.json({ success: true, message: 'Logged out.' });
+});
+
+// GET /api/student/me
+app.get('/api/student/me', auth, (req, res) => {
+  if (req.user.role !== 'student') return res.status(403).json({ error: 'Access denied.' });
+  res.json({ user: req.user });
+});
+
+// GET /api/student/submissions
+app.get('/api/student/submissions', auth, async (req, res) => {
+  if (req.user.role !== 'student') return res.status(403).json({ error: 'Access denied.' });
+  try {
+    if (usingDb) {
+      const result = await db.query('SELECT * FROM student_submissions WHERE student_name = $1 ORDER BY created_at DESC', [req.user.name]);
+      return res.json({ submissions: result.rows });
+    }
+    const submissions = readJson('student_submissions.json', []);
+    const studentSubs = submissions.filter(s => s.student_name === req.user.name);
+    res.json({ submissions: studentSubs });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to retrieve submissions.' });
+  }
+});
+
 
 // ============================================================
 // PUBLIC APIs — Educational Content

@@ -663,29 +663,29 @@ function renderBoardContent() {
   html += `<div class="resource-row">`;
   if (syllabus) {
     html += `
-      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${syllabus.title}')">
+      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${syllabus.title}', '${syllabus.file_url || ''}')">
         <div class="rc-icon" style="background:#3A7BD5">${SVG.file}</div>
         <div class="rc-info">
           <strong>${syllabus.title} ${syllabus.isNew ? '<span class="new-badge">New</span>' : ''}</strong>
           <span>Official Syllabus | PDF</span>
         </div>
         <div class="rc-actions">
-          <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${syllabus.title}')">${SVG.eye}</button>
-          <button class="rc-btn" title="Download" onclick="event.stopPropagation();handleDownload('${syllabus.title}')">${SVG.dl}</button>
+          <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${syllabus.title}', '${syllabus.file_url || ''}')">${SVG.eye}</button>
+          <button class="rc-btn" title="Download" onclick="event.stopPropagation();handleDownload('${syllabus.title}', '${syllabus.file_url || ''}')">${SVG.dl}</button>
         </div>
       </div>`;
   }
   if (markingScheme) {
     html += `
-      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${markingScheme.title}')">
+      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${markingScheme.title}', '${markingScheme.file_url || ''}')">
         <div class="rc-icon" style="background:#2BA899">${SVG.check}</div>
         <div class="rc-info">
           <strong>${markingScheme.title}</strong>
           <span>Marking Scheme | PDF</span>
         </div>
         <div class="rc-actions">
-          <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${markingScheme.title}')">${SVG.eye}</button>
-          <button class="rc-btn" title="Download" onclick="event.stopPropagation();handleDownload('${markingScheme.title}')">${SVG.dl}</button>
+          <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${markingScheme.title}', '${markingScheme.file_url || ''}')">${SVG.eye}</button>
+          <button class="rc-btn" title="Download" onclick="event.stopPropagation();handleDownload('${markingScheme.title}', '${markingScheme.file_url || ''}')">${SVG.dl}</button>
         </div>
       </div>`;
   }
@@ -701,7 +701,7 @@ function renderBoardContent() {
             <h3>${book.name}</h3>
             <span>${book.subtitle}</span>
           </div>
-          <button class="full-book-btn" onclick="openDocViewer('${book.name} — Complete Book')">
+          <button class="full-book-btn" onclick="openDocViewer('${book.name} — Complete Book', '${book.file_url || ''}')">
             ${SVG.dl} Complete Book
           </button>
         </div>
@@ -737,7 +737,7 @@ function renderChapter(book, ch) {
     </div>`).join('');
 
   const resources = [
-    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download Chapter',              action: `handleDownload('${book.name} — Chapter ${ch.num}')` },
+    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download Chapter',              action: `handleDownload('${book.name} — Chapter ${ch.num}', '${ch.file_url || ''}')` },
     { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary and Objectives',         action: `openDocViewer('${book.name} Ch.${ch.num} — Summary')` },
     { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Muhavare / Word Meanings',       action: `openDocViewer('${book.name} Ch.${ch.num} — Muhavare')` },
     { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Questions and Answers',          action: `openDocViewer('${book.name} Ch.${ch.num} — Q&A')` },
@@ -998,13 +998,35 @@ function initDocModal() {
   });
 }
 
-function openDocViewer(title) {
+function openDocViewer(title, url) {
   const modal    = document.getElementById('doc-modal');
   const titleEl  = document.getElementById('doc-modal-title');
-  const nameEl   = document.getElementById('doc-preview-name');
+  const bodyEl   = document.getElementById('doc-viewer-body');
   if (!modal) return;
+
   titleEl.textContent = title;
-  nameEl.textContent  = title;
+
+  // Backup original mock placeholder if we haven't already
+  if (!window._originalDocViewerHTML) {
+    window._originalDocViewerHTML = bodyEl.innerHTML;
+  }
+
+  // Setup download button in header
+  const dlBtn = document.getElementById('doc-download-btn');
+  if (dlBtn) {
+    const newDlBtn = dlBtn.cloneNode(true);
+    dlBtn.parentNode.replaceChild(newDlBtn, dlBtn);
+    newDlBtn.addEventListener('click', () => handleDownload(title, url));
+  }
+
+  if (url) {
+    bodyEl.innerHTML = `<iframe src="${url}" width="100%" height="520px" style="border:none;border-radius:var(--r-md);"></iframe>`;
+  } else {
+    bodyEl.innerHTML = window._originalDocViewerHTML;
+    const nameEl = document.getElementById('doc-preview-name');
+    if (nameEl) nameEl.textContent = title;
+  }
+
   openModal(modal);
 }
 

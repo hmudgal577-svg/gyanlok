@@ -1,0 +1,459 @@
+/* ════════════════════════════════════════
+   GyanLok — login-style.css
+   ════════════════════════════════════════ */
+
+:root {
+  --sidebar-w: 260px;
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* Auth Wrapper */
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 10% 20%, rgba(58, 123, 213, 0.05) 0%, rgba(255, 255, 255, 0) 90.1%), var(--bg);
+  padding: var(--sp-md);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-xl);
+  box-shadow: 0 12px 40px rgba(26, 39, 64, 0.08);
+  animation: scaleInModal 0.3s ease;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--sp-lg);
+}
+
+.auth-logo {
+  justify-content: center;
+  margin-bottom: var(--sp-sm);
+  display: inline-flex;
+}
+
+.auth-header h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.auth-header p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Tabs switcher */
+.auth-tabs {
+  display: flex;
+  background: var(--bg-soft);
+  padding: 4px;
+  border-radius: var(--r-md);
+  margin-bottom: var(--sp-lg);
+  border: 1px solid var(--border);
+}
+
+.auth-tab {
+  flex: 1;
+  border: none;
+  background: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 0.55rem 0;
+  border-radius: calc(var(--r-md) - 2px);
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all var(--t);
+}
+
+.auth-tab.active {
+  background: var(--card-bg);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Auth Options (Remember me & Forgot pass) */
+.auth-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  margin-bottom: var(--sp-md);
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text-body);
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember-me input {
+  cursor: pointer;
+}
+
+.forgot-pass {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.forgot-pass:hover {
+  text-decoration: underline;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-top: var(--sp-md);
+}
+
+.auth-switch a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* Error Box */
+.error-box {
+  background: #FFF5F5;
+  border: 1.5px solid #FADBD8;
+  color: #E05555;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--r-md);
+  margin-bottom: var(--sp-md);
+  line-height: 1.4;
+}
+
+/* ─────────────────────────────────────────
+   PORTAL DASHBOARD LAYOUT
+   ───────────────────────────────────────── */
+.portal-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* Sidebar */
+.portal-sidebar {
+  width: var(--sidebar-w);
+  background: var(--card-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.portal-main {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  padding: var(--sp-lg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Welcome Banner */
+.welcome-banner {
+  background: linear-gradient(135deg, var(--accent-bg), rgba(111, 164, 244, 0.05));
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-lg) var(--sp-xl);
+  margin-bottom: var(--sp-lg);
+}
+
+.welcome-banner h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.welcome-banner p {
+  font-size: 0.92rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+/* Stats Cards Grid */
+.dashboard-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-md);
+  margin-bottom: var(--sp-lg);
+}
+
+/* Alerts List */
+.classroom-info-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.classroom-info-box h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--sp-md);
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.alerts-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.alert-date {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.alert-text {
+  font-size: 0.88rem;
+  color: var(--text-body);
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* Chat Doubt Box Layout */
+.chat-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  height: 60vh;
+  min-height: 480px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.chat-info-card {
+  padding: var(--sp-lg);
+  border-right: 1px solid var(--border);
+  background: var(--bg-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.chat-info-card h3 {
+  font-size: 1.1rem;
+}
+
+.chat-info-card p {
+  font-size: 0.85rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+.mentor-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--card-bg);
+  padding: 0.75rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.mentor-avatar {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.mentor-profile strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.mentor-profile span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.message {
+  max-width: 75%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--r-md);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.message.student-msg {
+  background: var(--accent-bg);
+  color: var(--accent-dark);
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.message.mentor-msg {
+  background: var(--bg-soft);
+  color: var(--text-primary);
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+  border: 1px solid var(--border);
+}
+
+.message.system-msg {
+  background: none;
+  color: var(--text-muted);
+  text-align: center;
+  font-style: italic;
+  max-width: 100%;
+  align-self: center;
+}
+
+.chat-input-bar {
+  display: flex;
+  padding: var(--sp-md);
+  border-top: 1px solid var(--border);
+  gap: 0.5rem;
+  background: var(--card-bg);
+}
+
+.chat-input-bar input {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  outline: none;
+  font-size: 0.9rem;
+  background: var(--bg);
+}
+
+.chat-input-bar input:focus {
+  border-color: var(--accent);
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE LAYOUT (PORTAL)
+   ───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .portal-sidebar {
+    width: 68px;
+  }
+  .portal-sidebar .brand-text, 
+  .portal-sidebar .user-info {
+    display: none;
+  }
+  .portal-sidebar .sidebar-brand {
+    justify-content: center;
+    padding: var(--sp-sm) 0;
+  }
+  .portal-sidebar .sidebar-menu {
+    align-items: center;
+    padding: var(--sp-sm) 0;
+  }
+  .portal-sidebar .menu-item {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  .portal-sidebar .menu-item svg {
+    margin: 0;
+  }
+  .portal-sidebar .menu-item {
+    font-size: 0; /* Hide text */
+  }
+  .portal-sidebar .sidebar-footer {
+    padding: var(--sp-sm) 0;
+    align-items: center;
+  }
+  .portal-main {
+    margin-left: 68px;
+    padding: var(--sp-md);
+  }
+  .chat-layout {
+    grid-template-columns: 1fr;
+    height: 70vh;
+  }
+  .chat-info-card {
+    display: none; /* Hide doubt helper card on mobile to save vertical viewport */
+  }
+}
+
+@media (max-width: 480px) {
+  .portal-main {
+    padding: var(--sp-sm);
+  }
+  .welcome-banner {
+    padding: var(--sp-md);
+    border-radius: var(--r-lg);
+  }
+  .welcome-banner h2 {
+    font-size: 1.2rem;
+  }
+  .welcome-banner p {
+    font-size: 0.84rem;
+  }
+  .chat-messages {
+    padding: var(--sp-md);
+  }
+  .message {
+    max-width: 90%;
+  }
+}
