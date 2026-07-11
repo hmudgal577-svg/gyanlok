@@ -33,38 +33,40 @@ const BOARDS_DATA = {
     resources: {
       10: {
         Hindi: {
-          syllabus:      { title: 'Hindi B Syllabus 2026–27', isNew: true },
-          markingScheme: { title: 'Hindi B Marking Scheme 2026' },
+          syllabus:      { title: 'Hindi B Syllabus 2026–27', file_url: '/pdf/cbse/class10/hindi/class_10_hindi_syllabus_cbse.pdf', isNew: true },
+          markingScheme: { title: 'Hindi B Marking Scheme 2026', file_url: '/pdf/cbse/class10/hindi/class_10_hindi_marking_schema_cbse.pdf' },
           books: [
             {
               name: 'स्पर्श (भाग-2)',
               subtitle: 'कक्षा 10 हिंदी (कोर्स बी) — मुख्य पाठ्यपुस्तक (NCERT)',
               color: '#3A7BD5',
+              file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_complete_book.pdf',
               chapters: [
-                { num: 1,  title: 'कबीर — साखी', worksheets: 2 },
-                { num: 2,  title: 'मीरा — पद', worksheets: 2 },
-                { num: 3,  title: 'मैथिलीशरण गुप्त — मनुष्यता', worksheets: 2 },
-                { num: 4,  title: 'सुमित्रानंदन पंत — पर्वत प्रदेश में पावस', worksheets: 2 },
-                { num: 5,  title: 'वीरेन डंगवाल — तोप', worksheets: 2 },
-                { num: 6,  title: 'कैफ़ी आज़मी — कर चले हम फ़िदा', worksheets: 2 },
-                { num: 7,  title: 'रवींद्रनाथ ठाकुर — आत्मत्राण', worksheets: 2 },
-                { num: 8,  title: 'प्रेमचंद — बड़े भाई साहब', worksheets: 2 },
-                { num: 9,  title: 'सीताराम सेकसरिया — डायरी का एक पन्ना', worksheets: 2 },
-                { num: 10, title: 'लीलाधर मंडलोई — तताँरा-वामीरो कथा', worksheets: 2 },
-                { num: 11, title: 'प्रहलाद अग्रवाल — तीसरी कसम के शिल्पकार शैलेंद्र', worksheets: 2 },
-                { num: 12, title: 'निदा फ़ाज़ली — अब कहाँ दूसरे के दुख से दुखी होने वाले', worksheets: 2 },
-                { num: 13, title: 'रवींद्र केलेकर — पतझर में टूटी पत्तियाँ (गिन्नी का सोना / झेन की देन)', worksheets: 2 },
-                { num: 14, title: 'हबीब तनवीर — कारतूस (एकांकी)', worksheets: 2 },
+                { num: 1,  title: 'कबीर — साखी', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_1.pdf' },
+                { num: 2,  title: 'मीरा — पद', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_2.pdf' },
+                { num: 3,  title: 'मैथिलीशरण गुप्त — मनुष्यता', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_3.pdf' },
+                { num: 4,  title: 'सुमित्रानंदन पंत — पर्वत प्रदेश में पावस', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_4.pdf' },
+                { num: 5,  title: 'वीरेन डंगवाल — तोप', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_5.pdf' },
+                { num: 6,  title: 'कैफ़ी आज़मी — कर चले हम फ़िदा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_6.pdf' },
+                { num: 7,  title: 'रवींद्रनाथ ठाकुर — आत्मत्राण', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_7.pdf' },
+                { num: 8,  title: 'प्रेमचंद — बड़े भाई साहब', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_8.pdf' },
+                { num: 9,  title: 'सीताराम सेकसरिया — डायरी का एक पन्ना', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_9.pdf' },
+                { num: 10, title: 'लीलाधर मंडलोई — तताँरा-वामीरो कथा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_10.pdf' },
+                { num: 11, title: 'प्रहलाद अग्रवाल — तीसरी कसम के शिल्पकार शैलेंद्र', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_11.pdf' },
+                { num: 12, title: 'निदा फ़ाज़ली — अब कहाँ दूसरे के दुख से दुखी होने वाले', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_12.pdf' },
+                { num: 13, title: 'रवींद्र केलेकर — पतझर में टूटी पत्तियाँ (गिन्नी का सोना / झेन की देन)', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_13.pdf' },
+                { num: 14, title: 'हबीब तनवीर — कारतूस (एकांकी)', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_14.pdf' },
               ]
             },
             {
               name: 'संचयन (भाग-2)',
               subtitle: 'कक्षा 10 हिंदी (कोर्स बी) — पूरक पाठ्यपुस्तक (NCERT)',
               color: '#2BA899',
+              file_url: '/pdf/cbse/class10/hindi/class_10_hindi_book_complete_sanchayan.pdf',
               chapters: [
-                { num: 1, title: 'मिथिलेश्वर — हरिहर काका', worksheets: 2 },
-                { num: 2, title: 'गुरदयाल सिंह — सपनों के-से दिन', worksheets: 2 },
-                { num: 3, title: 'राही मासूम रज़ा — टोपी शुक्ला', worksheets: 2 },
+                { num: 1, title: 'मिथिलेश्वर — हरिहर काका', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_1.pdf' },
+                { num: 2, title: 'गुरदयाल सिंह — सपनों के-से दिन', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_2.pdf' },
+                { num: 3, title: 'राही मासूम रज़ा — टोपी शुक्ला', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_3.pdf' },
               ]
             }
           ]
@@ -1177,8 +1179,19 @@ function clearError(el, errId) {
   if (err) err.textContent = '';
 }
 
-function handleDownload(resourceName) {
-  showToast(`"${resourceName}" — will be available for download soon. Contact a mentor for direct access.`);
+function handleDownload(title, url) {
+  if (url) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = url.split('/').pop();
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast(`Downloading: "${title}"`);
+  } else {
+    showToast(`"${title}" — will be available for download soon. Contact a mentor for direct access.`);
+  }
 }
 
 function simulateSubmit(btn, paperId) {
