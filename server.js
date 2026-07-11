@@ -133,6 +133,7 @@ function writeJson(file, data) {
 
 // ─── App setup ──────────────────────────────────────────────────────────────
 const app        = express();
+app.set('trust proxy', 1); // trust first proxy behind Render / Vercel CDN
 const PORT       = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'gyanlok_super_secret_jwt_2026!';
 
