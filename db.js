@@ -1,22 +1,18 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Use connection string (DATABASE_URL) if available, otherwise config object
 const isProduction = process.env.NODE_ENV === 'production';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: isProduction ? { rejectUnauthorized: false } : false,
-  // Fallbacks if connectionString is not provided
-  user: process.env.PGUSER || 'postgres',
-  host: process.env.PGHOST || 'localhost',
-  database: process.env.PGDATABASE || 'gyanlok',
-  password: process.env.PGPASSWORD || 'postgres',
-  port: parseInt(process.env.PGPORT || '5432'),
+  ssl: { rejectUnauthorized: false },  // Required for Supabase & Render
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000,
 });
 
 pool.on('error', (err) => {
-  console.error('Unexpected error on idle database client', err);
+  console.error('[DB] Unexpected error on idle client:', err.message);
 });
 
 module.exports = {

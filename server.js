@@ -1,21 +1,51 @@
 /**
  * GyanLok Backend — server.js
- * Uses JSON file storage when PostgreSQL is not available.
- * All APIs work immediately without any database setup.
+ * Stack: Express + Supabase (PostgreSQL) + Cloudinary (file storage)
+ * Fallback: JSON file storage when DB not available
  */
 
-const express     = require('express');
-const cors        = require('cors');
-const helmet      = require('helmet');
-const cookieParser= require('cookie-parser');
-const rateLimit   = require('express-rate-limit');
-const multer      = require('multer');
-const path        = require('path');
-const fs          = require('fs');
-const bcrypt      = require('bcryptjs');
-const jwt         = require('jsonwebtoken');
+const express      = require('express');
+const cors         = require('cors');
+const helmet       = require('helmet');
+const cookieParser = require('cookie-parser');
+const rateLimit    = require('express-rate-limit');
+const multer       = require('multer');
+const path         = require('path');
+const fs           = require('fs');
+const bcrypt       = require('bcryptjs');
+const jwt          = require('jsonwebtoken');
 
 require('dotenv').config();
+
+// ─── Cloudinary setup (optional — falls back to local disk) ─────────────────
+let cloudinaryStorage = null;
+let usingCloudinary   = false;
+try {
+  if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+    const cloudinary = require('cloudinary').v2;
+    const { CloudinaryStorage } = require('multer-storage-cloudinary');
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key:    process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+    cloudinaryStorage = new CloudinaryStorage({
+      cloudinary,
+      params: async (req, file) => ({
+        folder:          'gyanlok',
+        resource_type:   'auto',
+        public_id:       `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_')}`,
+        allowed_formats: ['pdf','png','jpg','jpeg'],
+      }),
+    });
+    usingCloudinary = true;
+    console.log('[Storage] Cloudinary connected ✓');
+  } else {
+    console.log('[Storage] Cloudinary not configured → using local disk uploads/');
+  }
+} catch (e) {
+  console.log('[Storage] Cloudinary module error → using local disk uploads/', e.message);
+}
 
 // ─── Try to load PostgreSQL (optional) ─────────────────────────────────────
 let db = null;
@@ -143,25 +173,33 @@ const loginLimiter = rateLimit({
   message: { error: 'Too many login attempts. Try again after 15 minutes.' },
 });
 
-// ─── Multer (File Upload) ────────────────────────────────────────────────────
-const storage = multer.diskStorage({
+// ─── Multer (File Upload — Cloudinary or local disk) ───────────────────────
+const diskStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOADS_DIR),
   filename:    (req, file, cb) => {
-    const unique   = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const sanitized= file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const unique    = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const sanitized = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
     cb(null, unique + '-' + sanitized);
   }
 });
 const upload = multer({
-  storage,
+  storage: usingCloudinary ? cloudinaryStorage : diskStorage,
   fileFilter: (req, file, cb) => {
-    const ok = /pdf|png|jpeg|jpg/.test(path.extname(file.originalname).toLowerCase())
-            && /pdf|png|jpeg|jpg/.test(file.mimetype);
+    const ext  = path.extname(file.originalname).toLowerCase();
+    const mime = file.mimetype;
+    const ok   = /pdf|png|jpeg|jpg/.test(ext) && /pdf|png|jpeg|jpg|octet-stream/.test(mime);
     if (ok) cb(null, true);
     else    cb(new Error('Only PDF, PNG, and JPG files are allowed.'));
   },
-  limits: { fileSize: 10 * 1024 * 1024 } // 10 MB
+  limits: { fileSize: 25 * 1024 * 1024 } // 25 MB (Cloudinary supports up to 100MB)
 });
+
+// Helper: get public URL from uploaded file
+function getFileUrl(req) {
+  if (!req.file) return null;
+  if (usingCloudinary) return req.file.path;  // Cloudinary gives full URL in file.path
+  return `/uploads/${req.file.filename}`;      // Local disk gives filename
+}
 
 // ─── JWT Middleware ──────────────────────────────────────────────────────────
 function auth(req, res, next) {
@@ -498,7 +536,7 @@ app.post('/api/student-submit', upload.single('answer_file'), async (req, res) =
     // Allow JSON-only submissions (when no file, just mark submitted)
   }
 
-  const fileUrl = req.file ? `/uploads/${req.file.filename}` : null;
+  const fileUrl = getFileUrl(req);
   const entry = {
     id: Date.now(),
     resource_type, resource_id, resource_title,
@@ -571,7 +609,7 @@ app.post('/api/admin/upload-test-sheet', auth, upload.single('file'), async (req
   if (!type || !board || !class_num || !title || !subject)
     return res.status(400).json({ error: 'All required fields must be filled.' });
 
-  const fileUrl = `/uploads/${req.file.filename}`;
+  const fileUrl = getFileUrl(req);
   const entry = {
     id: Date.now(), type, board, class_num: parseInt(class_num),
     title, subject, date_label: date_label || '', pages: parseInt(pages || 1),
@@ -604,7 +642,7 @@ app.post('/api/admin/upload-chapter-resource', auth, upload.single('file'), asyn
   if (!board || !class_num || !subject || !book_name || !chapter_num || !chapter_title || !resource_type || !resource_title)
     return res.status(400).json({ error: 'All fields are required.' });
 
-  const fileUrl = `/uploads/${req.file.filename}`;
+  const fileUrl = getFileUrl(req);
 
   try {
     if (usingDb) {
@@ -702,7 +740,12 @@ app.patch('/api/admin/mentor-request/:id/status', auth, async (req, res) => {
 
 // ─── Health check ────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', storage: usingDb ? 'postgresql' : 'json-files', ts: new Date().toISOString() });
+  res.json({
+    status:       'ok',
+    db:           usingDb ? 'supabase-postgresql' : 'json-files',
+    fileStorage:  usingCloudinary ? 'cloudinary' : 'local-disk',
+    ts:           new Date().toISOString()
+  });
 });
 
 // ─── Catch-all: serve frontend ──────────────────────────────────────────────
@@ -718,7 +761,8 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`=========================================`);
   console.log(`GyanLok Backend running at http://localhost:${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`Storage: ${usingDb ? 'PostgreSQL' : 'JSON file storage (data/ folder)'}`);
+  console.log(`Environment:  ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Database:     ${usingDb ? 'Supabase PostgreSQL ✓' : 'JSON file storage'}`);
+  console.log(`File Storage: ${usingCloudinary ? 'Cloudinary ✓' : 'Local disk (uploads/)'}`);
   console.log(`=========================================`);
 });
