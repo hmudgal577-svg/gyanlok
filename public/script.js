@@ -280,53 +280,53 @@ const BOARDS_DATA = {
           books: [
             {
               name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤° — à¤—à¤¦à¥à¤¯ (Prose)',
-              subtitle: 'Class 10 ICSE Hindi — Gadya Khand Â· 10 Kahaniyaan',
+              subtitle: 'Class 10 ICSE Hindi — Gadya Khand | 10 Kahaniyaan',
               color: '#9B59B6',
               chapters: [
-                { num: 1,  title: 'à¤¬à¤¾à¤¤ à¤…à¤ à¤¨à¥à¤¨à¥€ à¤•à¥€',         worksheets: 2 },
-                { num: 2,  title: 'à¤•à¤¾à¤•à¥€',                   worksheets: 2 },
-                { num: 3,  title: 'à¤®à¤¹à¤¾à¤¯à¤œà¥à¤ž à¤•à¤¾ à¤ªà¥à¤°à¤¸à¥à¤•à¤¾à¤°',    worksheets: 2 },
-                { num: 4,  title: 'à¤¨à¥‡à¤¤à¤¾à¤œà¥€ à¤•à¤¾ à¤šà¤¶à¥à¤®à¤¾',        worksheets: 2 },
+                { num: 1,  title: 'à¤¬à¤¾à¤¤ à¤…à¤ à¤¨à¥à¤¨à¥€ à¤|à¥€',         worksheets: 2 },
+                { num: 2,  title: 'à¤|à¤¾à¤|à¥€',                   worksheets: 2 },
+                { num: 3,  title: 'à¤®à¤¹à¤¾à¤¯à¤œà¥à¤ž à¤|à¤¾ à¤ªà¥à¤°à¤¸à¥à¤|à¤¾à¤°',    worksheets: 2 },
+                { num: 4,  title: 'à¤¨à¥‡à¤¤à¤¾à¤œà¥€ à¤|à¤¾ à¤šà¤¶à¥à¤®à¤¾',        worksheets: 2 },
                 { num: 5,  title: 'à¤…à¤ªà¤¨à¤¾-à¤…à¤ªà¤¨à¤¾ à¤­à¤¾à¤—à¥à¤¯',        worksheets: 2 },
-                { num: 6,  title: 'à¤¬à¤¡à¤¼à¥‡ à¤˜à¤° à¤•à¥€ à¤¬à¥‡à¤Ÿà¥€',        worksheets: 2 },
+                { num: 6,  title: 'à¤¬à¤¡à¤¼à¥‡ à¤˜à¤° à¤|à¥€ à¤¬à¥‡à¤Ÿà¥€',        worksheets: 2 },
                 { num: 7,  title: 'à¤¸à¤‚à¤¦à¥‡à¤¹',                  worksheets: 1 },
                 { num: 8,  title: 'à¤­à¥€à¤¡à¤¼ à¤®à¥‡à¤‚ à¤–à¥‹à¤¯à¤¾ à¤†à¤¦à¤®à¥€',     worksheets: 2 },
                 { num: 9,  title: 'à¤­à¥‡à¤¡à¤¼à¥‡à¤‚ à¤”à¤° à¤­à¥‡à¤¡à¤¼à¤¿à¤',       worksheets: 1 },
-                { num: 10, title: 'à¤¦à¥‹ à¤•à¤²à¤¾à¤•à¤¾à¤°',              worksheets: 2 },
+                { num: 10, title: 'à¤¦à¥‹ à¤|à¤²à¤¾à¤|à¤¾à¤°',              worksheets: 2 },
               ]
             },
             {
               name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤° — à¤ªà¤¦à¥à¤¯ (Poetry)',
-              subtitle: 'Class 10 ICSE Hindi — Padya Khand Â· 9 Kavitaen',
+              subtitle: 'Class 10 ICSE Hindi — Padya Khand | 9 Kavitaen',
               color: '#E8900A',
               chapters: [
                 { num: 1, title: 'à¤¸à¤¾à¤–à¥€',                    worksheets: 2 },
-                { num: 2, title: 'à¤•à¥à¤‚à¤¡à¤²à¤¿à¤¯à¤¾à¤',               worksheets: 2 },
-                { num: 3, title: 'à¤¸à¥à¤µà¤°à¥à¤— à¤¬à¤¨à¤¾ à¤¸à¤•à¤¤à¥‡ à¤¹à¥ˆà¤‚',     worksheets: 2 },
+                { num: 2, title: 'à¤|à¥à¤‚à¤¡à¤²à¤¿à¤¯à¤¾à¤',               worksheets: 2 },
+                { num: 3, title: 'à¤¸à¥à¤µà¤°à¥à¤— à¤¬à¤¨à¤¾ à¤¸à¤|à¤¤à¥‡ à¤¹à¥ˆà¤‚',     worksheets: 2 },
                 { num: 4, title: 'à¤µà¤¹ à¤®à¤¾à¤¤à¥ƒà¤­à¥‚à¤®à¤¿ à¤®à¥‡à¤°à¥€',        worksheets: 2 },
                 { num: 5, title: 'à¤®à¥‡à¤˜ à¤†à¤',                  worksheets: 1 },
-                { num: 6, title: 'à¤¸à¥‚à¤°à¤¦à¤¾à¤¸ à¤•à¥‡ à¤ªà¤¦',            worksheets: 2 },
-                { num: 7, title: 'à¤µà¤¿à¤¨à¤¯ à¤•à¥‡ à¤ªà¤¦',               worksheets: 2 },
-                { num: 8, title: 'à¤­à¤¿à¤•à¥à¤·à¥à¤•',                 worksheets: 1 },
-                { num: 9, title: 'à¤šà¤²à¤¨à¤¾ à¤¹à¤®à¤¾à¤°à¤¾ à¤•à¤¾à¤® à¤¹à¥ˆ',        worksheets: 2 },
+                { num: 6, title: 'à¤¸à¥‚à¤°à¤¦à¤¾à¤¸ à¤|à¥‡ à¤ªà¤¦',            worksheets: 2 },
+                { num: 7, title: 'à¤µà¤¿à¤¨à¤¯ à¤|à¥‡ à¤ªà¤¦',               worksheets: 2 },
+                { num: 8, title: 'à¤­à¤¿à¤|à¥à¤|à¥à¤|',                 worksheets: 1 },
+                { num: 9, title: 'à¤šà¤²à¤¨à¤¾ à¤¹à¤®à¤¾à¤°à¤¾ à¤|à¤¾à¤® à¤¹à¥ˆ',        worksheets: 2 },
               ]
             },
             {
-              name: 'à¤à¤•à¤¾à¤‚à¤•à¥€ à¤¸à¤‚à¤šà¤¯',
-              subtitle: 'Class 10 ICSE Hindi — Ekanki Â· 6 One-Act Plays',
+              name: 'à¤à¤|à¤¾à¤‚à¤|à¥€ à¤¸à¤‚à¤šà¤¯',
+              subtitle: 'Class 10 ICSE Hindi — Ekanki | 6 One-Act Plays',
               color: '#2BA899',
               chapters: [
-                { num: 1, title: 'à¤¸à¤‚à¤¸à¥à¤•à¤¾à¤° à¤”à¤° à¤­à¤¾à¤µà¤¨à¤¾',        worksheets: 2 },
-                { num: 2, title: 'à¤¬à¤¹à¥‚ à¤•à¥€ à¤µà¤¿à¤¦à¤¾',             worksheets: 2 },
-                { num: 3, title: 'à¤®à¤¾à¤¤à¥ƒà¤­à¥‚à¤®à¤¿ à¤•à¤¾ à¤®à¤¾à¤¨',         worksheets: 2 },
+                { num: 1, title: 'à¤¸à¤‚à¤¸à¥à¤|à¤¾à¤° à¤”à¤° à¤­à¤¾à¤µà¤¨à¤¾',        worksheets: 2 },
+                { num: 2, title: 'à¤¬à¤¹à¥‚ à¤|à¥€ à¤µà¤¿à¤¦à¤¾',             worksheets: 2 },
+                { num: 3, title: 'à¤®à¤¾à¤¤à¥ƒà¤­à¥‚à¤®à¤¿ à¤|à¤¾ à¤®à¤¾à¤¨',         worksheets: 2 },
                 { num: 4, title: 'à¤¸à¥‚à¤–à¥€ à¤¡à¤¾à¤²à¥€',               worksheets: 2 },
-                { num: 5, title: 'à¤®à¤¹à¤¾à¤­à¤¾à¤°à¤¤ à¤•à¥€ à¤à¤• à¤¸à¤¾à¤à¤',      worksheets: 2 },
+                { num: 5, title: 'à¤®à¤¹à¤¾à¤­à¤¾à¤°à¤¤ à¤|à¥€ à¤à¤| à¤¸à¤¾à¤à¤',      worksheets: 2 },
                 { num: 6, title: 'à¤¦à¥€à¤ªà¤¦à¤¾à¤¨',                  worksheets: 2 },
               ]
             },
             {
               name: 'à¤¨à¤¯à¤¾ à¤°à¤¾à¤¸à¥à¤¤à¤¾ (à¤‰à¤ªà¤¨à¥à¤¯à¤¾à¤¸)',
-              subtitle: 'Class 10 ICSE Hindi — Novel Â· à¤…à¤§à¥à¤¯à¤¾à¤¯ à¤•à¥à¤°à¤®à¤µà¤¾à¤° (Publisher: Evergreen / Morning Star)',
+              subtitle: 'Class 10 ICSE Hindi — Novel | à¤…à¤§à¥à¤¯à¤¾à¤¯ à¤|à¥à¤°à¤®à¤µà¤¾à¤° (Publisher: Evergreen / Morning Star)',
               color: '#E05555',
               chapters: [
                 { num: 1, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 1', worksheets: 1 },
@@ -670,7 +670,7 @@ function renderBoardContent() {
         <div class="rc-icon" style="background:#3A7BD5">${SVG.file}</div>
         <div class="rc-info">
           <strong>${syllabus.title} ${syllabus.isNew ? '<span class="new-badge">New</span>' : ''}</strong>
-          <span>Official Syllabus €¢ PDF</span>
+          <span>Official Syllabus | PDF</span>
         </div>
         <div class="rc-actions">
           <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${syllabus.title}')">${SVG.eye}</button>
@@ -684,7 +684,7 @@ function renderBoardContent() {
         <div class="rc-icon" style="background:#2BA899">${SVG.check}</div>
         <div class="rc-info">
           <strong>${markingScheme.title}</strong>
-          <span>Marking Scheme €¢ PDF</span>
+          <span>Marking Scheme | PDF</span>
         </div>
         <div class="rc-actions">
           <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${markingScheme.title}')">${SVG.eye}</button>
@@ -853,7 +853,7 @@ function renderTestPaperCard(p) {
         <div class="tp-icon" style="background:${p.color}">${SVG.file}</div>
         <div class="tp-info">
           <div class="tp-title">${p.title}</div>
-          <div class="tp-meta">${p.subject} Â· ${p.pages} pages Â· ${p.date}</div>
+          <div class="tp-meta">${p.subject} | ${p.pages} pages | ${p.date}</div>
         </div>
       </div>
       <div class="tp-view-mode">
