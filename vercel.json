@@ -9,6 +9,10 @@
       "destination": "/admin.html"
     },
     {
+      "source": "/admin-dashboard",
+      "destination": "/admin-dashboard.html"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://gyanlok-backend.onrender.com/api/:path*"
     },
