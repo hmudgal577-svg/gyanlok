@@ -159,7 +159,24 @@ app.use(helmet({
   },
 }));
 
-app.use(cors({ origin: true, credentials: true }));
+const ALLOWED_ORIGINS = [
+  'https://gyanlok.vercel.app',
+  'https://gyanlok-backend.onrender.com',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  /\.vercel\.app$/,
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // allow non-browser (Postman, curl)
+    const allowed = ALLOWED_ORIGINS.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    );
+    callback(null, allowed);
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -257,7 +274,7 @@ app.post('/api/admin/login', loginLimiter, async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 24 * 60 * 60 * 1000,
     });
     res.json({ success: true, user: { email: user.email, role: user.role } });
@@ -313,7 +330,7 @@ app.post('/api/student/register', async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -348,7 +365,7 @@ app.post('/api/student/login', async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 24 * 60 * 60 * 1000,
     });
 

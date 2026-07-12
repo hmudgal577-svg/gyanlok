@@ -1,3 +1,6 @@
+// Backend URL (Render)
+const API_BASE = 'https://gyanlok-backend.onrender.com';
+
 // Global state variables
 let currentAdmin = null;
 
@@ -24,7 +27,7 @@ function updateDate() {
 
 async function checkAuth() {
   try {
-    const res = await fetch('/api/admin/me');
+    const res = await fetch(`${API_BASE}/api/admin/me`, { credentials: 'include' });
     if (res.ok) {
       const data = await res.json();
       currentAdmin = data.user;
@@ -79,9 +82,10 @@ function initLoginForm() {
     submitBtn.textContent = 'Logging in...';
 
     try {
-      const res = await fetch('/api/admin/login', {
+      const res = await fetch(`${API_BASE}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, password })
       });
 
@@ -110,7 +114,7 @@ function initLoginForm() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
       try {
-        const res = await fetch('/api/admin/logout', { method: 'POST' });
+        const res = await fetch(`${API_BASE}/api/admin/logout`, { method: 'POST', credentials: 'include' });
         if (res.ok) {
           showLogin();
         }
@@ -165,9 +169,9 @@ function initSidebarMenu() {
 async function loadOverviewStats() {
   try {
     const [requestsRes, submissionsRes, notificationsRes] = await Promise.all([
-      fetch('/api/admin/mentor-requests'),
-      fetch('/api/admin/submissions'),
-      fetch('/api/admin/notifications')
+      fetch(`${API_BASE}/api/admin/mentor-requests`, { credentials: 'include' }),
+      fetch(`${API_BASE}/api/admin/submissions`, { credentials: 'include' }),
+      fetch(`${API_BASE}/api/admin/notifications`, { credentials: 'include' })
     ]);
 
     if (requestsRes.ok && submissionsRes.ok && notificationsRes.ok) {
@@ -232,7 +236,7 @@ async function loadMentorRequests() {
   if (!container) return;
 
   try {
-    const res = await fetch('/api/admin/mentor-requests');
+    const res = await fetch(`${API_BASE}/api/admin/mentor-requests`, { credentials: 'include' });
     if (!res.ok) throw new Error();
     const data = await res.json();
 
@@ -260,7 +264,7 @@ async function loadSubmissions() {
   if (!container) return;
 
   try {
-    const res = await fetch('/api/admin/submissions');
+    const res = await fetch(`${API_BASE}/api/admin/submissions`, { credentials: 'include' });
     if (!res.ok) throw new Error();
     const data = await res.json();
 
@@ -311,8 +315,9 @@ function initUploadForms() {
       const formData = new FormData(testForm);
 
       try {
-        const res = await fetch('/api/admin/upload-test-sheet', {
+        const res = await fetch(`${API_BASE}/api/admin/upload-test-sheet`, {
           method: 'POST',
+          credentials: 'include',
           body: formData
         });
         const data = await res.json();
@@ -350,8 +355,9 @@ function initUploadForms() {
       const formData = new FormData(chForm);
 
       try {
-        const res = await fetch('/api/admin/upload-chapter-resource', {
+        const res = await fetch(`${API_BASE}/api/admin/upload-chapter-resource`, {
           method: 'POST',
+          credentials: 'include',
           body: formData
         });
         const data = await res.json();

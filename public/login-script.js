@@ -2,6 +2,9 @@
    GyanLok — login-script.js
    ════════════════════════════════════════ */
 
+// Backend URL (Render)
+const API_BASE = 'https://gyanlok-backend.onrender.com';
+
 document.addEventListener('DOMContentLoaded', () => {
   // Elements
   const authContainer      = document.getElementById('auth-container');
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = document.getElementById('admin-password').value.trim();
 
     try {
-      const res = await fetch('/api/admin/login', {
+      const res = await fetch(`${API_BASE}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -113,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = document.getElementById('student-password').value.trim();
 
     try {
-      const res = await fetch('/api/student/login', {
+      const res = await fetch(`${API_BASE}/api/student/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -149,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch('/api/student/register', {
+      const res = await fetch(`${API_BASE}/api/student/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, class_num, password })
@@ -171,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── STUDENT LOGOUT ──────────────────────────────────────────────────────
   studentLogoutBtn.addEventListener('click', async () => {
     try {
-      await fetch('/api/student/logout', { method: 'POST' });
+      await fetch(`${API_BASE}/api/student/logout`, { method: 'POST', credentials: 'include' });
     } catch(e) {}
     localStorage.removeItem('student_session');
     currentUser = null;
@@ -183,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── CHECK SESSION ───────────────────────────────────────────────────────
   async function checkSession() {
     try {
-      const res = await fetch('/api/student/me');
+      const res = await fetch(`${API_BASE}/api/student/me`, { credentials: 'include' });
       const data = await res.json();
       if (res.ok && data.user) {
         currentUser = data.user;
@@ -220,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── LOAD STUDENT SUBMISSIONS ────────────────────────────────────────────
   async function loadSubmissions() {
     try {
-      const res = await fetch('/api/student/submissions');
+      const res = await fetch(`${API_BASE}/api/student/submissions`, { credentials: 'include' });
       const data = await res.json();
       if (res.ok && data.submissions && data.submissions.length > 0) {
         renderSubmissionsTable(data.submissions);
