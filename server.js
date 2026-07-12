@@ -19,8 +19,28 @@ const path         = require('path');
 const fs           = require('fs');
 const bcrypt       = require('bcryptjs');
 const jwt          = require('jsonwebtoken');
+const nodemailer   = require('nodemailer');
 
 require('dotenv').config();
+
+// ─── Allowed admin emails & OTP store ──────────────────────────────────────
+const ALLOWED_ADMIN_EMAILS = [
+  'hmudgal577@gmail.com',
+  'ektaverma09.work@gmail.com',
+];
+// Map: email → { otp, expiresAt }
+const otpStore = new Map();
+
+// ─── Nodemailer transporter ──────────────────────────────────────────────────
+function createTransporter() {
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  });
+}
 
 // ─── Cloudinary setup (optional — falls back to local disk) ─────────────────
 let cloudinaryStorage = null;
@@ -221,40 +241,94 @@ function invalidateCache() { boardsDataCache = null; }
 // AUTHENTICATION ENDPOINTS
 // ============================================================
 
-// POST /api/admin/login
-app.post('/api/admin/login', loginLimiter, async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password)
-    return res.status(400).json({ error: 'Email and password are required.' });
+// POST /api/admin/send-otp  — Step 1: send OTP to Gmail
+app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email is required.' });
 
+  // Only allowed admin emails
+  if (!ALLOWED_ADMIN_EMAILS.includes(email.toLowerCase().trim())) {
+    return res.status(403).json({ error: 'Access denied. This email is not authorized.' });
+  }
+
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+    return res.status(500).json({ error: 'Email service not configured. Contact admin.' });
+  }
+
+  // Generate 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
+  otpStore.set(email.toLowerCase().trim(), { otp, expiresAt });
+
+  // Send OTP email
   try {
-    let user;
-    if (usingDb) {
-      const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-      user = result.rows[0];
-    } else {
-      const users = readJson('users.json', []);
-      user = users.find(u => u.email === email);
-    }
-
-    if (!user) return res.status(401).json({ error: 'Invalid email or password.' });
-
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) return res.status(401).json({ error: 'Invalid email or password.' });
-
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      maxAge: 24 * 60 * 60 * 1000,
+    const transporter = createTransporter();
+    await transporter.sendMail({
+      from: `"GyanLok Admin" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: '🔐 GyanLok Admin Login OTP',
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:12px;">
+          <h2 style="color:#1a2740;margin-bottom:8px;">GyanLok Admin Login</h2>
+          <p style="color:#555;margin-bottom:24px;">Your One-Time Password (OTP) for admin login:</p>
+          <div style="background:#1a2740;color:#fff;font-size:36px;font-weight:bold;letter-spacing:12px;text-align:center;padding:24px;border-radius:8px;">${otp}</div>
+          <p style="color:#888;margin-top:20px;font-size:13px;">⏱ This OTP is valid for <strong>5 minutes</strong> only.</p>
+          <p style="color:#888;font-size:13px;">If you did not request this, please ignore this email.</p>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
+          <p style="color:#aaa;font-size:11px;">GyanLok Learning Platform — Secure Admin Access</p>
+        </div>
+      `,
     });
-    res.json({ success: true, user: { email: user.email, role: user.role } });
+    console.log(`[OTP] Sent to ${email}`);
+    res.json({ success: true, message: `OTP sent to ${email}. Valid for 5 minutes.` });
   } catch (err) {
-    console.error('[login]', err);
-    res.status(500).json({ error: 'Server error.' });
+    console.error('[OTP] Email send failed:', err.message);
+    res.status(500).json({ error: 'Failed to send OTP. Please try again.' });
   }
 });
+
+// POST /api/admin/verify-otp  — Step 2: verify OTP and issue JWT
+app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) return res.status(400).json({ error: 'Email and OTP are required.' });
+
+  const key = email.toLowerCase().trim();
+  if (!ALLOWED_ADMIN_EMAILS.includes(key)) {
+    return res.status(403).json({ error: 'Access denied.' });
+  }
+
+  const record = otpStore.get(key);
+  if (!record) return res.status(401).json({ error: 'No OTP found. Please request a new OTP.' });
+  if (Date.now() > record.expiresAt) {
+    otpStore.delete(key);
+    return res.status(401).json({ error: 'OTP expired. Please request a new one.' });
+  }
+  if (record.otp !== otp.trim()) {
+    return res.status(401).json({ error: 'Incorrect OTP. Please try again.' });
+  }
+
+  // OTP valid — delete it (one-time use)
+  otpStore.delete(key);
+
+  // Issue JWT
+  const token = jwt.sign({ email: key, role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+  res.json({ success: true, user: { email: key, role: 'admin' } });
+});
+
+// POST /api/admin/login  — Legacy (disabled, returns friendly error)
+app.post('/api/admin/login', loginLimiter, async (req, res) => {
+  return res.status(410).json({
+    error: 'Password login is disabled. Please use OTP login.',
+    useOtp: true,
+  });
+});
+
 
 // POST /api/admin/logout
 app.post('/api/admin/logout', (req, res) => {

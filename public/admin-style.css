@@ -611,3 +611,46 @@ tr:hover td {
     width: 100%;
   }
 }
+
+/* ════════════════════════════════════════
+   OTP LOGIN STYLES
+   ════════════════════════════════════════ */
+.otp-sent-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--r-sm);
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #1e40af;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.shake {
+  animation: shake 0.4s ease;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.2) !important;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.83rem;
+  text-decoration: underline;
+  padding: 4px;
+}
+.btn-link:hover {
+  color: #2a6ac3;
+}
