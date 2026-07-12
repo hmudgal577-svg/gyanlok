@@ -31,15 +31,41 @@ const ALLOWED_ADMIN_EMAILS = [
 // Map: email → { otp, expiresAt }
 const otpStore = new Map();
 
-// ─── Nodemailer transporter ──────────────────────────────────────────────────
-function createTransporter() {
-  return nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
+// ─── Brevo Email Helper ──────────────────────────────────────────────────────
+async function sendOtpViaBrevo(email, otp) {
+  if (!process.env.BREVO_API_KEY) {
+    throw new Error('BREVO_API_KEY environment variable is not configured');
+  }
+
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'api-key': process.env.BREVO_API_KEY,
+      'content-type': 'application/json'
     },
+    body: JSON.stringify({
+      sender: { name: 'GyanLok Admin', email: 'hmudgal577@gmail.com' },
+      to: [{ email: email }],
+      subject: '🔐 GyanLok Admin Login OTP',
+      htmlContent: `
+        <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:12px;">
+          <h2 style="color:#1a2740;margin-bottom:8px;">GyanLok Admin Login</h2>
+          <p style="color:#555;margin-bottom:24px;">Your One-Time Password (OTP) for admin login:</p>
+          <div style="background:#1a2740;color:#fff;font-size:36px;font-weight:bold;letter-spacing:12px;text-align:center;padding:24px;border-radius:8px;">${otp}</div>
+          <p style="color:#888;margin-top:20px;font-size:13px;">⏱ This OTP is valid for <strong>5 minutes</strong> only.</p>
+          <p style="color:#888;font-size:13px;">If you did not request this, please ignore this email.</p>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
+          <p style="color:#aaa;font-size:11px;">GyanLok Learning Platform — Secure Admin Access</p>
+        </div>
+      `
+    })
   });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Brevo status ${response.status}`);
+  }
 }
 
 // ─── Cloudinary setup (optional — falls back to local disk) ─────────────────
@@ -251,8 +277,8 @@ app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
     return res.status(403).json({ error: 'Access denied. This email is not authorized.' });
   }
 
-  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-    return res.status(500).json({ error: 'Email service not configured. Contact admin.' });
+  if (!process.env.BREVO_API_KEY) {
+    return res.status(500).json({ error: 'Email service (Brevo) not configured. Contact admin.' });
   }
 
   // Generate 6-digit OTP
@@ -262,28 +288,12 @@ app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
 
   // Send OTP email
   try {
-    const transporter = createTransporter();
-    await transporter.sendMail({
-      from: `"GyanLok Admin" <${process.env.GMAIL_USER}>`,
-      to: email,
-      subject: '🔐 GyanLok Admin Login OTP',
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:12px;">
-          <h2 style="color:#1a2740;margin-bottom:8px;">GyanLok Admin Login</h2>
-          <p style="color:#555;margin-bottom:24px;">Your One-Time Password (OTP) for admin login:</p>
-          <div style="background:#1a2740;color:#fff;font-size:36px;font-weight:bold;letter-spacing:12px;text-align:center;padding:24px;border-radius:8px;">${otp}</div>
-          <p style="color:#888;margin-top:20px;font-size:13px;">⏱ This OTP is valid for <strong>5 minutes</strong> only.</p>
-          <p style="color:#888;font-size:13px;">If you did not request this, please ignore this email.</p>
-          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
-          <p style="color:#aaa;font-size:11px;">GyanLok Learning Platform — Secure Admin Access</p>
-        </div>
-      `,
-    });
-    console.log(`[OTP] Sent to ${email}`);
+    await sendOtpViaBrevo(email.toLowerCase().trim(), otp);
+    console.log(`[OTP] Sent via Brevo to ${email}`);
     res.json({ success: true, message: `OTP sent to ${email}. Valid for 5 minutes.` });
   } catch (err) {
-    console.error('[OTP] Email send failed:', err.message);
-    res.status(500).json({ error: 'Failed to send OTP. Please try again.' });
+    console.error('[OTP] Brevo send failed:', err.message);
+    res.status(500).json({ error: `Failed to send OTP: ${err.message}` });
   }
 });
 
