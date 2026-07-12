@@ -1,3 +1,8 @@
+const dns = require('dns');
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
+
 /**
  * GyanLok Backend — server.js
  * Stack: Express + Supabase (PostgreSQL) + Cloudinary (file storage)
@@ -95,14 +100,13 @@ function writeJson(file, data) {
       const res = await db.query("SELECT * FROM users WHERE role = 'admin'");
       const hash = await bcrypt.hash(adminPassword, 12);
       if (res.rows.length === 0) {
-        await db.query("INSERT INTO users (email, password_hash, role) VALUES ($1, $2, 'admin')", [adminEmail, hash]);
+        await db.query("INSERT INTO users (email, password_hash, role, name) VALUES ($1, $2, 'admin', 'Admin')", [adminEmail, hash]);
         console.log(`[INIT] Admin created in database: ${adminEmail}`);
       } else {
+        // Always sync email AND password on every startup
         const currentAdmin = res.rows[0];
-        if (currentAdmin.email !== adminEmail) {
-          await db.query('UPDATE users SET email = $1, password_hash = $2 WHERE id = $3', [adminEmail, hash, currentAdmin.id]);
-          console.log(`[INIT] Admin updated in database: ${adminEmail}`);
-        }
+        await db.query('UPDATE users SET email = $1, password_hash = $2, updated_at = NOW() WHERE id = $3', [adminEmail, hash, currentAdmin.id]);
+        console.log(`[INIT] Admin credentials synced in database: ${adminEmail}`);
       }
     } catch (e) {
       console.error('[INIT-DB-ADMIN]', e);
