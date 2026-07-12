@@ -5,21 +5,8 @@ let otpTimerInterval = null;
 let currentOtpEmail = '';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Check if already authenticated, if yes, redirect straight to dashboard
-  checkAlreadyAuth();
   initOtpLoginFlow();
 });
-
-async function checkAlreadyAuth() {
-  try {
-    const res = await fetch(`${API_BASE}/api/admin/me`, { credentials: 'include' });
-    if (res.ok) {
-      window.location.href = '/admin-dashboard.html';
-    }
-  } catch (err) {
-    console.error('Auth check failed:', err);
-  }
-}
 
 function initOtpLoginFlow() {
   const sendOtpForm   = document.getElementById('send-otp-form');
