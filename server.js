@@ -52,86 +52,58 @@ try {
   console.log('[Storage] Cloudinary module error → using local disk uploads/', e.message);
 }
 
-// ─── Try to load PostgreSQL (optional) ─────────────────────────────────────
+// ─── DB Init + Admin Sync (single async IIFE) ──────────────────────────────
 let db = null;
 let usingDb = false;
-try {
+(async () => {
+  // Step 1: Connect to DB and set usingDb flag (await so admin sync runs after)
   if (!process.env.DATABASE_URL) {
     console.log('[DB] DATABASE_URL not set → using JSON file storage');
   } else {
-    console.log('[DB] DATABASE_URL found, connecting to PostgreSQL...');
-    db = require('./db');
-    db.query('SELECT 1').then(() => {
+    try {
+      console.log('[DB] DATABASE_URL found, connecting to PostgreSQL...');
+      db = require('./db');
+      await db.query('SELECT 1');  // ← await here ensures usingDb is set before admin sync
       usingDb = true;
       console.log('[DB] PostgreSQL (Supabase) connected ✓');
-    }).catch((err) => {
+    } catch (err) {
       usingDb = false;
       console.error('[DB] PostgreSQL connection FAILED:', err.message);
       console.log('[DB] Falling back to JSON file storage');
-    });
+    }
   }
-} catch (e) {
-  console.error('[DB] PostgreSQL module error:', e.message);
-  console.log('[DB] Falling back to JSON file storage');
-}
 
-// ─── JSON File Storage helpers ─────────────────────────────────────────────
-const DATA_DIR = path.join(__dirname, 'data');
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-
-function readJson(file, defaultVal) {
-  const p = path.join(DATA_DIR, file);
-  if (!fs.existsSync(p)) return defaultVal;
-  try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
-  catch (e) { return defaultVal; }
-}
-
-function writeJson(file, data) {
-  fs.writeFileSync(path.join(DATA_DIR, file), JSON.stringify(data, null, 2), 'utf8');
-}
-
-// ─── Seed or Update admin user based on Env variables ────────────────────────
-(async () => {
-  const adminEmail = process.env.ADMIN_EMAIL || 'ektaverma09.work@gmail.com';
+  // Step 2: Sync admin credentials (runs AFTER DB connection is confirmed)
+  const adminEmail    = process.env.ADMIN_EMAIL    || 'ektaverma09.work@gmail.com';
   const adminPassword = process.env.ADMIN_PASSWORD || '99722 47410';
 
   if (usingDb) {
     try {
-      const res = await db.query("SELECT * FROM users WHERE role = 'admin'");
+      const res  = await db.query("SELECT * FROM users WHERE role = 'admin'");
       const hash = await bcrypt.hash(adminPassword, 12);
       if (res.rows.length === 0) {
         await db.query("INSERT INTO users (email, password_hash, role, name) VALUES ($1, $2, 'admin', 'Admin')", [adminEmail, hash]);
         console.log(`[INIT] Admin created in database: ${adminEmail}`);
       } else {
-        // Always sync email AND password on every startup
-        const currentAdmin = res.rows[0];
-        await db.query('UPDATE users SET email = $1, password_hash = $2, updated_at = NOW() WHERE id = $3', [adminEmail, hash, currentAdmin.id]);
+        await db.query('UPDATE users SET email = $1, password_hash = $2, updated_at = NOW() WHERE id = $3', [adminEmail, hash, res.rows[0].id]);
         console.log(`[INIT] Admin credentials synced in database: ${adminEmail}`);
       }
     } catch (e) {
-      console.error('[INIT-DB-ADMIN]', e);
+      console.error('[INIT-DB-ADMIN]', e.message);
     }
   } else {
     const users = readJson('users.json', []);
-    const hash = await bcrypt.hash(adminPassword, 12);
-    const adminIndex = users.findIndex(u => u.role === 'admin');
-
-    if (adminIndex === -1) {
-      users.push({
-        id: Date.now(),
-        email: adminEmail,
-        password_hash: hash,
-        role: 'admin'
-      });
-      writeJson('users.json', users);
+    const hash  = await bcrypt.hash(adminPassword, 12);
+    const idx   = users.findIndex(u => u.role === 'admin');
+    if (idx === -1) {
+      users.push({ id: Date.now(), email: adminEmail, password_hash: hash, role: 'admin' });
       console.log(`[INIT] Admin created in JSON storage: ${adminEmail}`);
     } else {
-      const currentAdmin = users[adminIndex];
-      currentAdmin.email = adminEmail;
-      currentAdmin.password_hash = hash;
-      writeJson('users.json', users);
-      console.log(`[INIT] Admin credentials synchronized with env vars: ${adminEmail}`);
+      users[idx].email = adminEmail;
+      users[idx].password_hash = hash;
+      console.log(`[INIT] Admin synced in JSON storage: ${adminEmail}`);
     }
+    writeJson('users.json', users);
   }
 })();
 
