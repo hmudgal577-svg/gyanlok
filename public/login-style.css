@@ -2,6 +2,10 @@
    GyanLok — login-style.css
    ════════════════════════════════════════ */
 
+[hidden] {
+  display: none !important;
+}
+
 :root {
   --sidebar-w: 260px;
   --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);

@@ -51,12 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   tabAdmin.addEventListener('click', () => {
-    tabAdmin.classList.add('active');
-    tabStudent.classList.remove('active');
-    adminLoginForm.hidden = false;
-    studentLoginForm.hidden = true;
-    studentRegisterForm.hidden = true;
-    clearErrors();
+    window.location.href = '/admin.html';
   });
 
   // Switch between Student Login & Signup
