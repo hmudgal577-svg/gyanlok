@@ -1022,7 +1022,34 @@ function openDocViewer(title, url) {
   }
 
   if (url) {
-    bodyEl.innerHTML = `<iframe src="${url}" width="100%" height="520px" style="border:none;border-radius:var(--r-md);"></iframe>`;
+    // Mobile detection — iOS Safari & Android Chrome can't render PDFs in iframes
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    const isAbsoluteUrl = /^https?:\/\//i.test(url);
+
+    let viewerUrl = url;
+    if (isMobile) {
+      // Use Google Docs Viewer for mobile — works on all browsers
+      const absoluteUrl = isAbsoluteUrl ? url : `${window.location.origin}${url}`;
+      viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true`;
+    }
+
+    bodyEl.innerHTML = `
+      <div class="pdf-viewer-wrap">
+        <iframe
+          src="${viewerUrl}"
+          width="100%"
+          style="border:none; border-radius:var(--r-md); height: clamp(420px, 75vh, 800px); display:block;"
+          title="${title}"
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+        ${isMobile ? `
+        <div class="viewer-mobile-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Document load nahi ho raha?
+          <a href="${url}" target="_blank" rel="noopener" class="viewer-open-link">Naye tab mein kholen →</a>
+        </div>` : ''}
+      </div>`;
   } else {
     bodyEl.innerHTML = window._originalDocViewerHTML;
     const nameEl = document.getElementById('doc-preview-name');
